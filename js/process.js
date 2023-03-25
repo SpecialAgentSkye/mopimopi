@@ -1194,6 +1194,21 @@ function addOverallData(counter) {
   }
   console.log("rank calculated", resObj)
 
+  resObj.lastDPS.Combatant = resObj.lastDPS.persons
+  resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION
+  resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration
+  resObj.lastDPS.isActive = false;
+  resObj.lastDPS.partys = rankArray.length
+  resObj.lastDPS.sortKey = "mergedDamage"
+  resObj.lastDPS.sortvector = 1
+  resObj.lastHPS.Combatant = resObj.lastHPS.persons
+  resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION
+  resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration
+  resObj.lastHPS.isActive = false;
+  resObj.lastHPS.partys = rankArray.length
+  resObj.lastHPS.sortKey = "mergedHealed"
+  resObj.lastHPS.sortvector = 1
+
   encounterArray.unshift({
     lastDPS: resObj.lastDPS,
     lastHPS: resObj.lastHPS,
