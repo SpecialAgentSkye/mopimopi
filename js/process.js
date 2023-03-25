@@ -485,7 +485,7 @@ function onCombatDataUpdate(flag, last) {
           .replace(")", "")
           .replace(/'/g, "_");
         if ((init.q.pets == 1 && a.Job == "AVA") || a.Class == "") {
-        } else inputGraph(userName, flag, a.parent.maxdamage, a);
+        } else inputGraph(userName, flag, a.parent ? a.parent.maxdamage : 0, a);
       }
     }
   } else {
@@ -821,6 +821,7 @@ function addComma(num, dd, ds) {
   }
 }
 function inputGraph(userName, flag, maxDamage, p) {
+  if(maxDamage = 0) maxDamage = 1
   if (flag == "DPS")
     var userWidth = parseInt((p.mergedDamage / maxDamage) * 100);
   else {
