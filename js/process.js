@@ -61,10 +61,18 @@ function update(lastDPS, lastHPS) {
       lastHPS.resort("healed", 1);
     } else {
       lastDPS.summonerMerge = true;
-      lastDPS.AttachPets();
+      try{
+        lastDPS.AttachPets();
+      } catch(e){
+        console.log("Ignore this")
+      }
       lastDPS.resort("mergedDamage", 1);
       lastHPS.summonerMerge = true;
-      lastHPS.AttachPets();
+      try{
+        lastHPS.AttachPets();
+      } catch(e){
+        console.log("Ignore this")
+      }
       lastHPS.resort("mergedHealed", 1);
     }
     if (init.q.act == 2) {
@@ -1128,8 +1136,8 @@ function addOverallData(counter) {
     }
   }
   let resObj = {
-    lastDPS: { Encounter: {}, overallData: true, title: "Overall Data" },
-    lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
+    lastDPS: { Encounter: {}, overallData: false, title: "Overall Data" },
+    lastHPS: { Encounter: {}, overallData: false, title: "Overall Data" },
   };
   let dontTouch = {};
   if (relevantEncounters.length > 0) dontTouch = relevantEncounters[0];
