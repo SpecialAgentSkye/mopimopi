@@ -55,10 +55,19 @@ function update(lastDPS, lastHPS) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
-      lastDPS.resort("damage", 1);
+      try{
+        lastDPS.resort("damage", 1);
+      } catch(e){
+        console.log("Ignore this")
+      }
       lastHPS.summonerMerge = false;
       lastHPS.DetachPets();
-      lastHPS.resort("healed", 1);
+      try{
+        lastHPS.resort("healed", 1);
+            } catch(e){
+        console.log("Ignore this")
+      }
+      
     } else {
       lastDPS.summonerMerge = true;
       try{
