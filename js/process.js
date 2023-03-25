@@ -55,34 +55,17 @@ function update(lastDPS, lastHPS) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
-      try{
-        lastDPS.resort("damage", 1);
-      } catch(e){
-        console.log("Ignore this")
-      }
+      lastDPS.resort("damage", 1);
       lastHPS.summonerMerge = false;
       lastHPS.DetachPets();
-      try{
-        lastHPS.resort("healed", 1);
-            } catch(e){
-        console.log("Ignore this")
-      }
-      
+      lastHPS.resort("healed", 1);
     } else {
       lastDPS.summonerMerge = true;
-      try{
-        lastDPS.AttachPets();
-        lastDPS.resort("mergedDamage", 1);
-      } catch(e){
-        console.log("Ignore this")
-      }
+      lastDPS.AttachPets();
+      lastDPS.resort("mergedDamage", 1);
       lastHPS.summonerMerge = true;
-      try{
-        lastHPS.AttachPets();
-        lastHPS.resort("mergedHealed", 1);
-      } catch(e){
-        console.log("Ignore this")
-      }
+      lastHPS.AttachPets();
+      lastHPS.resort("mergedHealed", 1);
     }
     if (init.q.act == 2) {
       $("nav table[name=ACT_2line]").fadeIn(0);
@@ -485,7 +468,7 @@ function onCombatDataUpdate(flag, last) {
           .replace(")", "")
           .replace(/'/g, "_");
         if ((init.q.pets == 1 && a.Job == "AVA") || a.Class == "") {
-        } else inputGraph(userName, flag, a.parent ? a.parent.maxdamage : 0, a);
+        } else inputGraph(userName, flag, a.parent.maxdamage, a);
       }
     }
   } else {
@@ -821,7 +804,6 @@ function addComma(num, dd, ds) {
   }
 }
 function inputGraph(userName, flag, maxDamage, p) {
-  if(maxDamage = 0) maxDamage = 1
   if (flag == "DPS")
     var userWidth = parseInt((p.mergedDamage / maxDamage) * 100);
   else {
@@ -1146,8 +1128,8 @@ function addOverallData(counter) {
     }
   }
   let resObj = {
-    lastDPS: { Encounter: {}, overallData: false, title: "Overall Data" },
-    lastHPS: { Encounter: {}, overallData: false, title: "Overall Data" },
+    lastDPS: { Encounter: {}, overallData: true, title: "Overall Data" },
+    lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
   };
   let dontTouch = {};
   if (relevantEncounters.length > 0) dontTouch = relevantEncounters[0];
