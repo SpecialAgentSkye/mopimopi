@@ -1183,14 +1183,16 @@ function addOverallData(counter) {
     });
   }
   rankArray = calculateRanks(rankArray);
+  console.log("rank calculated", rankArray)
   for (var d in resObj.lastDPS.persons) {
-    let b = rankArray.filter(i => i.name == a.name)[0]
+    let b = rankArray.filter(i => i.name == resObj.lastDPS.persons[d].name)[0]
     resObj.lastDPS.persons[d].rank = b.dpsRank;
   }
   for (var d in resObj.lastHPS.persons) {
-    let b = rankArray.filter(i => i.name == a.name)[0]
+    let b = rankArray.filter(i => i.name == resObj.lastHPS.persons[d].name)[0]
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
+  console.log("rank calculated", resObj)
 
   encounterArray.unshift({
     lastDPS: resObj.lastDPS,
