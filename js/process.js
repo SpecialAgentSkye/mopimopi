@@ -72,17 +72,17 @@ function update(lastDPS, lastHPS) {
       lastDPS.summonerMerge = true;
       try{
         lastDPS.AttachPets();
+        lastDPS.resort("mergedDamage", 1);
       } catch(e){
         console.log("Ignore this")
       }
-      lastDPS.resort("mergedDamage", 1);
       lastHPS.summonerMerge = true;
       try{
         lastHPS.AttachPets();
+        lastHPS.resort("mergedHealed", 1);
       } catch(e){
         console.log("Ignore this")
       }
-      lastHPS.resort("mergedHealed", 1);
     }
     if (init.q.act == 2) {
       $("nav table[name=ACT_2line]").fadeIn(0);
