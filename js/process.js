@@ -1510,6 +1510,8 @@ function addOverallData(counter) {
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
   console.log("rank calculated", resObj);
+  resObj.lastDPS.resort("damage", 1);
+  resObj.lastHPS.resort("healed", 1);
 
   resObj.lastDPS.Combatant = resObj.lastDPS.persons;
   resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
@@ -1597,32 +1599,6 @@ function addOverallData(counter) {
 }
 
 function populateOuterObjects(a, b, init = false) {
-  for (const [key, value] of Object.entries(b.persons)) {
-    if(b.persons[key].displayName == "Limit Break"){
-      b.persons[key].visible = false;
-    }
-    if(a.persons){
-      if(!a.persons[key]){
-        let person = b.persons[key];
-        let clone = (({ parent, ...person }) => person)(person);
-        a.persons[key] = JSON.parse(JSON.stringify(clone));
-      }
-    }
-  }
-  if(a.persons){
-    for (const [key, value] of Object.entries(a.persons)) {
-      if(a.persons[key].displayName == "Limit Break"){
-        a.persons[key].visible = false;
-      }
-      if(b.persons){
-        if(!b.persons[key]){
-          let person = a.persons[key];
-          let clone = (({ parent, ...person }) => person)(person);
-          b.persons[key] = JSON.parse(JSON.stringify(clone));
-        }
-      }
-    }
-  }
   if (init) {
     a.Encounter["DAMAGE-b"] = b.Encounter["DAMAGE-b"];
     a.Encounter["DAMAGE-k"] = b.Encounter["DAMAGE-k"];
@@ -1680,6 +1656,27 @@ function populateOuterObjects(a, b, init = false) {
     );
     a.Encounter.ENCDPS = Math.floor(a.Encounter.encdps);
     a.Encounter.ENCHPS = Math.floor(a.Encounter.enchps);
+  }
+
+  for (const [key, value] of Object.entries(b.persons)) {
+    if(a.persons){
+      if(!a.persons[key]){
+        let person = b.persons[key];
+        let clone = (({ parent, ...person }) => person)(person);
+        a.persons[key] = JSON.parse(JSON.stringify(clone));
+      }
+    }
+  }
+  if(a.persons){
+    for (const [key, value] of Object.entries(a.persons)) {
+      if(b.persons){
+        if(!b.persons[key]){
+          let person = a.persons[key];
+          let clone = (({ parent, ...person }) => person)(person);
+          b.persons[key] = JSON.parse(JSON.stringify(clone));
+        }
+      }
+    }
   }
   return a;
 }
