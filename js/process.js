@@ -468,7 +468,7 @@ function onCombatDataUpdate(flag, last) {
           .replace(")", "")
           .replace(/'/g, "_");
         if ((init.q.pets == 1 && a.Job == "AVA") || a.Class == "") {
-        } else inputGraph(userName, flag, a.parent.maxdamage, a);
+        } else inputGraph(userName, flag, a.displayName != "Limit Break" ? a.parent.maxdamage : 1, a);
       }
     }
   } else {
