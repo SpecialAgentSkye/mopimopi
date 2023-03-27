@@ -1131,6 +1131,111 @@ function addOverallData(counter) {
     lastDPS: { Encounter: {}, overallData: true, title: "Overall Data" },
     lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
   };
+
+  resObj.lastDPS.AttachPets = function() {
+    this.summonerMerge = !0;
+    for (var i in this.Combatant) {
+        this.Combatant[i].returnOrigin();
+        this.Combatant[i].recalculate();
+        this.Combatant[i].parent = this
+  
+        if (this.Combatant[i].Job == "AVA") {
+            if (this.Combatant[i].petOwner == myName || this.Combatant[i].petOwner == tmpMyName)
+                var owner = this.Combatant['YOU']
+            else
+                var owner = this.Combatant[this.Combatant[i].petOwner]
+  
+            if (this.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+                owner.mergedmaxhitval = this.Combatant[i].maxhitval
+                owner.mergedmaxhitstr = this.Combatant[i].maxhitstr
+            }
+            if (this.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+                owner.mergedmaxhealval = this.Combatant[i].maxhealval
+                owner.mergedmaxhealstr = this.Combatant[i].maxhealstr
+            }
+        }
+  
+    }
+  }
+    resObj.lastDPS.DetachPets = function() {
+    this.summonerMerge = !1;
+    for (var i in this.Combatant) {
+        this.Combatant[i].returnOrigin();
+        this.Combatant[i].recalculate();
+        this.Combatant[i].parent = this
+        this.Combatant[i].mergedmaxhitval = this.Combatant[i].maxhitval
+        this.Combatant[i].mergedmaxhitstr = this.Combatant[i].maxhitstr
+        this.Combatant[i].mergedmaxhealval = this.Combatant[i].maxhealval
+        this.Combatant[i].mergedmaxhealstr = this.Combatant[i].maxhealstr
+    }
+  }
+    resObj.lastDPS.sortkeyChange = function(key) {
+    this.resort(key, !0)
+  };
+    resObj.lastDPS.sortkeyChangeDesc = function(key) {
+    this.resort(key, !1)
+  };
+    resObj.lastDPS.resort = function(key, vector) {
+    if (key == undefined)
+        this.sortkey = activeSort(this.sortkey);
+    else this.sortkey = activeSort(key);
+    if (vector == undefined)
+        vector = this.sortvector;
+    this.sort(vector)
+  };
+
+  resObj.lastHPS.AttachPets = function() {
+    this.summonerMerge = !0;
+    for (var i in this.Combatant) {
+        this.Combatant[i].returnOrigin();
+        this.Combatant[i].recalculate();
+        this.Combatant[i].parent = this
+  
+        if (this.Combatant[i].Job == "AVA") {
+            if (this.Combatant[i].petOwner == myName || this.Combatant[i].petOwner == tmpMyName)
+                var owner = this.Combatant['YOU']
+            else
+                var owner = this.Combatant[this.Combatant[i].petOwner]
+  
+            if (this.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+                owner.mergedmaxhitval = this.Combatant[i].maxhitval
+                owner.mergedmaxhitstr = this.Combatant[i].maxhitstr
+            }
+            if (this.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+                owner.mergedmaxhealval = this.Combatant[i].maxhealval
+                owner.mergedmaxhealstr = this.Combatant[i].maxhealstr
+            }
+        }
+  
+    }
+  }
+    resObj.lastHPS.DetachPets = function() {
+    this.summonerMerge = !1;
+    for (var i in this.Combatant) {
+        this.Combatant[i].returnOrigin();
+        this.Combatant[i].recalculate();
+        this.Combatant[i].parent = this
+        this.Combatant[i].mergedmaxhitval = this.Combatant[i].maxhitval
+        this.Combatant[i].mergedmaxhitstr = this.Combatant[i].maxhitstr
+        this.Combatant[i].mergedmaxhealval = this.Combatant[i].maxhealval
+        this.Combatant[i].mergedmaxhealstr = this.Combatant[i].maxhealstr
+    }
+  }
+    resObj.lastHPS.sortkeyChange = function(key) {
+    this.resort(key, !0)
+  };
+    resObj.lastHPS.sortkeyChangeDesc = function(key) {
+    this.resort(key, !1)
+  };
+    resObj.lastHPS.resort = function(key, vector) {
+    if (key == undefined)
+        this.sortkey = activeSort(this.sortkey);
+    else this.sortkey = activeSort(key);
+    if (vector == undefined)
+        vector = this.sortvector;
+    this.sort(vector)
+  };
+
   let dontTouch = {};
   if (relevantEncounters.length > 0) dontTouch = relevantEncounters[0];
   resObj.lastDPS = populateOuterObjects(
