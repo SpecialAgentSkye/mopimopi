@@ -1149,11 +1149,14 @@ function addOverallData(counter) {
     var tmpUser = [];
   
     for (var i in resObj.lastDPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+
         if (resObj.lastDPS.Combatant[i].petOwner == "") {
             tmpUser.push(resObj.lastDPS.Combatant[i].name);
         } else {
             tmpOwner.push(resObj.lastDPS.Combatant[i].petOwner);
         }
+      }
     }
     for (var i in tmpUser) {
         for (var j in tmpOwner) {
@@ -1169,6 +1172,8 @@ function addOverallData(counter) {
         }
     }
     for (var i in resObj.lastDPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+
         if (resObj.lastDPS.Combatant[i].isPet && resObj.lastDPS.summonerMerge) {
             if (resObj.lastDPS.Combatant["YOU"] != undefined) {
                 if (tmpMyName == resObj.lastDPS.Combatant[i].petOwner)
@@ -1181,6 +1186,7 @@ function addOverallData(counter) {
         } else {
             resObj.lastDPS.Combatant[i].visible = !0
         }
+      }
     }
     var tmp = [];
     var r = 0;
@@ -1217,9 +1223,12 @@ function addOverallData(counter) {
         resObj.lastDPS.Combatant[tmp[i].val.name] = tmp[i].val
     }
     for (var i in resObj.lastDPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+
         if (!resObj.lastDPS.Combatant[i].visible) continue;
         resObj.lastDPS.Combatant[i].rank = r++;
         resObj.lastDPS.Combatant[i].maxdamage = resObj.lastDPS.maxdamage
+      }
     }
     resObj.lastDPS.partys = r
     resObj.lastDPS.persons = resObj.lastDPS.Combatant
@@ -1227,6 +1236,7 @@ function addOverallData(counter) {
   resObj.lastDPS.AttachPets = function() {
     resObj.lastDPS.summonerMerge = !0;
     for (var i in resObj.lastDPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
         resObj.lastDPS.Combatant[i].returnOrigin();
         resObj.lastDPS.Combatant[i].recalculate();
         resObj.lastDPS.Combatant[i].parent = resObj.lastDPS
@@ -1247,11 +1257,13 @@ function addOverallData(counter) {
             }
         }
   
+      }
     }
   }
     resObj.lastDPS.DetachPets = function() {
     resObj.lastDPS.summonerMerge = !1;
     for (var i in resObj.lastDPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
         resObj.lastDPS.Combatant[i].returnOrigin();
         resObj.lastDPS.Combatant[i].recalculate();
         resObj.lastDPS.Combatant[i].parent = resObj.lastDPS
@@ -1259,6 +1271,7 @@ function addOverallData(counter) {
         resObj.lastDPS.Combatant[i].mergedmaxhitstr = resObj.lastDPS.Combatant[i].maxhitstr
         resObj.lastDPS.Combatant[i].mergedmaxhealval = resObj.lastDPS.Combatant[i].maxhealval
         resObj.lastDPS.Combatant[i].mergedmaxhealstr = resObj.lastDPS.Combatant[i].maxhealstr
+      }
     }
   }
     resObj.lastDPS.sortkeyChange = function(key) {
