@@ -1501,7 +1501,7 @@ function populateInnerObjects(a, b, resObj) {
   a["crithealPct"] = pFloat((a.mergedCritheals / a.mergedHeals) * 100);
   a.tohit = pFloat((a.mergedHits / a.mergedSwings) * 100);
   a.mergedHealed = a.healed - a.overHeal;
-  a.parent=resObj.lastDPS.Encounter
+  a.parent=resObj.lastDPS
 
   a.returnOrigin = function() {
     for (var i in a.original) {
