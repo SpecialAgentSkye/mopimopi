@@ -1132,6 +1132,98 @@ function addOverallData(counter) {
     lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
   };
 
+  resObj.lastDPS.sort = function(vector) {
+    if (vector != undefined)
+        resObj.lastDPS.sortvector = vector;
+    if (resObj.lastDPS.summonerMerge) {
+        switch (resObj.lastDPS.sortkey) {
+            case "damage":
+                resObj.lastDPS.sortkey = "mergedDamage";
+                break;
+            case "healed":
+                resObj.lastDPS.sortkey = "mergedHealed";
+        }
+    }
+  
+    var tmpOwner = [];
+    var tmpUser = [];
+  
+    for (var i in resObj.lastDPS.Combatant) {
+        if (resObj.lastDPS.Combatant[i].petOwner == "") {
+            tmpUser.push(resObj.lastDPS.Combatant[i].name);
+        } else {
+            tmpOwner.push(resObj.lastDPS.Combatant[i].petOwner);
+        }
+    }
+    for (var i in tmpUser) {
+        for (var j in tmpOwner) {
+            if (tmpUser[i] == tmpOwner[j]) {
+                delete tmpOwner[j];
+            }
+        }
+    }
+    tmpMyName = "";
+    for (var i = 0; i < tmpOwner.length; i++) {
+        if (tmpOwner[i] != undefined) {
+            tmpMyName = tmpOwner[i];
+        }
+    }
+    for (var i in resObj.lastDPS.Combatant) {
+        if (resObj.lastDPS.Combatant[i].isPet && resObj.lastDPS.summonerMerge) {
+            if (resObj.lastDPS.Combatant["YOU"] != undefined) {
+                if (tmpMyName == resObj.lastDPS.Combatant[i].petOwner)
+                    resObj.lastDPS.Combatant["YOU"].merge(resObj.lastDPS.Combatant[i]);
+            }
+            if (resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner] != undefined) {
+                resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner].merge(resObj.lastDPS.Combatant[i]);
+            }
+            resObj.lastDPS.Combatant[i].visible = !1
+        } else {
+            resObj.lastDPS.Combatant[i].visible = !0
+        }
+    }
+    var tmp = [];
+    var r = 0;
+    for (var i in resObj.lastDPS.Combatant) {
+        tmp.push({
+            key: resObj.lastDPS.Combatant[i][resObj.lastDPS.sortkey],
+            val: resObj.lastDPS.Combatant[i]
+        });
+    }
+    resObj.lastDPS.Combatant = {};
+    if (resObj.lastDPS.sortvector)
+        tmp.sort(function(a, b) {
+            return b.key - resObj.lastDPS.key
+        });
+    else tmp.sort(function(a, b) {
+        return resObj.lastDPS.key - b.key
+    });
+    var tmpMax = 0;
+    for (var i in tmp) {
+        if (resObj.lastDPS.summonerMerge == true) {
+            if (tmp[i].val.Job != "AVA") {
+                if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
+                    tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
+            }
+        } else {
+            if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
+                tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
+        }
+    }
+    resObj.lastDPS.maxdamage = tmpMax;
+    resObj.lastDPS.maxValue = tmpMax;
+  
+    for (var i in tmp) {
+        resObj.lastDPS.Combatant[tmp[i].val.name] = tmp[i].val
+    }
+    for (var i in resObj.lastDPS.Combatant) {
+        if (!resObj.lastDPS.Combatant[i].visible) continue;
+        resObj.lastDPS.Combatant[i].rank = r++;
+        resObj.lastDPS.Combatant[i].maxdamage = resObj.lastDPS.maxdamage
+    }
+    resObj.lastDPS.partys = r
+    resObj.lastDPS.persons = resObj.lastDPS.Combatant
+  };
   resObj.lastDPS.AttachPets = function() {
     resObj.lastDPS.summonerMerge = !0;
     for (var i in resObj.lastDPS.Combatant) {
@@ -1184,6 +1276,98 @@ function addOverallData(counter) {
     resObj.lastDPS.sort(vector)
   };
 
+  resObj.lastHPS.sort = function(vector) {
+    if (vector != undefined)
+        resObj.lastHPS.sortvector = vector;
+    if (resObj.lastHPS.summonerMerge) {
+        switch (resObj.lastHPS.sortkey) {
+            case "damage":
+                resObj.lastHPS.sortkey = "mergedDamage";
+                break;
+            case "healed":
+                resObj.lastHPS.sortkey = "mergedHealed";
+        }
+    }
+  
+    var tmpOwner = [];
+    var tmpUser = [];
+  
+    for (var i in resObj.lastHPS.Combatant) {
+        if (resObj.lastHPS.Combatant[i].petOwner == "") {
+            tmpUser.push(resObj.lastHPS.Combatant[i].name);
+        } else {
+            tmpOwner.push(resObj.lastHPS.Combatant[i].petOwner);
+        }
+    }
+    for (var i in tmpUser) {
+        for (var j in tmpOwner) {
+            if (tmpUser[i] == tmpOwner[j]) {
+                delete tmpOwner[j];
+            }
+        }
+    }
+    tmpMyName = "";
+    for (var i = 0; i < tmpOwner.length; i++) {
+        if (tmpOwner[i] != undefined) {
+            tmpMyName = tmpOwner[i];
+        }
+    }
+    for (var i in resObj.lastHPS.Combatant) {
+        if (resObj.lastHPS.Combatant[i].isPet && resObj.lastHPS.summonerMerge) {
+            if (resObj.lastHPS.Combatant["YOU"] != undefined) {
+                if (tmpMyName == resObj.lastHPS.Combatant[i].petOwner)
+                    resObj.lastHPS.Combatant["YOU"].merge(resObj.lastHPS.Combatant[i]);
+            }
+            if (resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner] != undefined) {
+                resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner].merge(resObj.lastHPS.Combatant[i]);
+            }
+            resObj.lastHPS.Combatant[i].visible = !1
+        } else {
+            resObj.lastHPS.Combatant[i].visible = !0
+        }
+    }
+    var tmp = [];
+    var r = 0;
+    for (var i in resObj.lastHPS.Combatant) {
+        tmp.push({
+            key: resObj.lastHPS.Combatant[i][resObj.lastHPS.sortkey],
+            val: resObj.lastHPS.Combatant[i]
+        });
+    }
+    resObj.lastHPS.Combatant = {};
+    if (resObj.lastHPS.sortvector)
+        tmp.sort(function(a, b) {
+            return b.key - resObj.lastHPS.key
+        });
+    else tmp.sort(function(a, b) {
+        return resObj.lastHPS.key - b.key
+    });
+    var tmpMax = 0;
+    for (var i in tmp) {
+        if (resObj.lastHPS.summonerMerge == true) {
+            if (tmp[i].val.Job != "AVA") {
+                if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
+                    tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
+            }
+        } else {
+            if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
+                tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
+        }
+    }
+    resObj.lastHPS.maxdamage = tmpMax;
+    resObj.lastHPS.maxValue = tmpMax;
+  
+    for (var i in tmp) {
+        resObj.lastHPS.Combatant[tmp[i].val.name] = tmp[i].val
+    }
+    for (var i in resObj.lastHPS.Combatant) {
+        if (!resObj.lastHPS.Combatant[i].visible) continue;
+        resObj.lastHPS.Combatant[i].rank = r++;
+        resObj.lastHPS.Combatant[i].maxdamage = resObj.lastHPS.maxdamage
+    }
+    resObj.lastHPS.partys = r
+    resObj.lastHPS.persons = resObj.lastHPS.Combatant
+  };
   resObj.lastHPS.AttachPets = function() {
     resObj.lastHPS.summonerMerge = !0;
     for (var i in resObj.lastHPS.Combatant) {
