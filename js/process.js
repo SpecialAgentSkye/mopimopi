@@ -1384,6 +1384,8 @@ function addOverallData(counter) {
   resObj.lastHPS.AttachPets = function() {
     resObj.lastHPS.summonerMerge = !0;
     for (var i in resObj.lastHPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+
         resObj.lastHPS.Combatant[i].returnOrigin();
         resObj.lastHPS.Combatant[i].recalculate();
         resObj.lastHPS.Combatant[i].parent = resObj.lastHPS
@@ -1403,12 +1405,15 @@ function addOverallData(counter) {
                 owner.mergedmaxhealstr = resObj.lastHPS.Combatant[i].maxhealstr
             }
         }
+      }
   
     }
   }
     resObj.lastHPS.DetachPets = function() {
     resObj.lastHPS.summonerMerge = !1;
     for (var i in resObj.lastHPS.Combatant) {
+      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+
         resObj.lastHPS.Combatant[i].returnOrigin();
         resObj.lastHPS.Combatant[i].recalculate();
         resObj.lastHPS.Combatant[i].parent = resObj.lastHPS
@@ -1416,6 +1421,7 @@ function addOverallData(counter) {
         resObj.lastHPS.Combatant[i].mergedmaxhitstr = resObj.lastHPS.Combatant[i].maxhitstr
         resObj.lastHPS.Combatant[i].mergedmaxhealval = resObj.lastHPS.Combatant[i].maxhealval
         resObj.lastHPS.Combatant[i].mergedmaxhealstr = resObj.lastHPS.Combatant[i].maxhealstr
+      }
     }
   }
     resObj.lastHPS.sortkeyChange = function(key) {
