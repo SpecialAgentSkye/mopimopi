@@ -1485,7 +1485,6 @@ function addOverallData(counter) {
     });
   }
   rankArray = calculateRanks(rankArray);
-  console.log("rank calculated", rankArray)
   for (var d in resObj.lastDPS.persons) {
     let b = rankArray.filter(i => i.name == resObj.lastDPS.persons[d].name)[0]
     resObj.lastDPS.persons[d].rank = b.dpsRank;
@@ -1494,7 +1493,9 @@ function addOverallData(counter) {
     let b = rankArray.filter(i => i.name == resObj.lastHPS.persons[d].name)[0]
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
-  console.log("rank calculated", resObj)
+
+  resObj.lastDPS.persons = resObj.lastDPS.persons.sort((a, b) => (a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : 0));
+  resObj.lastHPS.persons = resObj.lastHPS.persons.sort((a, b) => (a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : 0));
 
   resObj.lastDPS.Combatant = resObj.lastDPS.persons
   resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION
