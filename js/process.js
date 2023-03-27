@@ -1494,9 +1494,7 @@ function addOverallData(counter) {
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
 
-  resObj.lastDPS.persons = resObj.lastDPS.persons.sort((a, b) => (a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : 0));
-  resObj.lastHPS.persons = resObj.lastHPS.persons.sort((a, b) => (a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : 0));
-
+  
   resObj.lastDPS.Combatant = resObj.lastDPS.persons
   resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION
   resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration
@@ -1511,7 +1509,7 @@ function addOverallData(counter) {
   resObj.lastHPS.partys = rankArray.length
   resObj.lastHPS.sortKey = "mergedHealed"
   resObj.lastHPS.sortvector = 1
-
+  
   encounterArray.unshift({
     lastDPS: resObj.lastDPS,
     lastHPS: resObj.lastHPS,
