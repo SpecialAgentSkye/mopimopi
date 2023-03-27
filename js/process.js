@@ -51,7 +51,8 @@ function update(lastDPS, lastHPS) {
   if (lastDPS.zone == "HAERU") {
     _ = "_P";
   } else _ = "";
-  if (true) { //(!lastDPS.overallData) {
+  if (true) {
+    //(!lastDPS.overallData) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
@@ -376,7 +377,8 @@ function createRaidTableBody(flag, a, userName) {
   );
 }
 function onCombatDataUpdate(flag, last) {
-  if (true){ //(!last.overallData) {
+  if (true) {
+    //(!last.overallData) {
     if (last.Combatant["YOU"] != undefined || last.Combatant["YOU"] != null) {
       var Height = 0;
       var tableHeader = document.getElementById(flag + "Header" + _);
@@ -468,7 +470,7 @@ function onCombatDataUpdate(flag, last) {
           .replace(")", "")
           .replace(/'/g, "_");
         if ((init.q.pets == 1 && a.Job == "AVA") || a.Class == "") {
-        } else inputGraph(userName, flag, a.displayName != "Limit Break" ? a.parent.maxdamage : last.maxdamage, a);
+        } else inputGraph(userName, flag, a.parent.maxdamage, a);
       }
     }
   } else {
@@ -1132,311 +1134,314 @@ function addOverallData(counter) {
     lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
   };
 
-  resObj.lastDPS.sort = function(vector) {
-    if (vector != undefined)
-        resObj.lastDPS.sortvector = vector;
+  resObj.lastDPS.sort = function (vector) {
+    if (vector != undefined) resObj.lastDPS.sortvector = vector;
     if (resObj.lastDPS.summonerMerge) {
-        switch (resObj.lastDPS.sortkey) {
-            case "damage":
-                resObj.lastDPS.sortkey = "mergedDamage";
-                break;
-            case "healed":
-                resObj.lastDPS.sortkey = "mergedHealed";
-        }
+      switch (resObj.lastDPS.sortkey) {
+        case "damage":
+          resObj.lastDPS.sortkey = "mergedDamage";
+          break;
+        case "healed":
+          resObj.lastDPS.sortkey = "mergedHealed";
+      }
     }
-  
+
     var tmpOwner = [];
     var tmpUser = [];
-  
-    for (var i in resObj.lastDPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
 
-        if (resObj.lastDPS.Combatant[i].petOwner == "") {
-            tmpUser.push(resObj.lastDPS.Combatant[i].name);
-        } else {
-            tmpOwner.push(resObj.lastDPS.Combatant[i].petOwner);
-        }
+    for (var i in resObj.lastDPS.Combatant) {
+      if (resObj.lastDPS.Combatant[i].petOwner == "") {
+        tmpUser.push(resObj.lastDPS.Combatant[i].name);
+      } else {
+        tmpOwner.push(resObj.lastDPS.Combatant[i].petOwner);
       }
     }
     for (var i in tmpUser) {
-        for (var j in tmpOwner) {
-            if (tmpUser[i] == tmpOwner[j]) {
-                delete tmpOwner[j];
-            }
+      for (var j in tmpOwner) {
+        if (tmpUser[i] == tmpOwner[j]) {
+          delete tmpOwner[j];
         }
+      }
     }
     tmpMyName = "";
     for (var i = 0; i < tmpOwner.length; i++) {
-        if (tmpOwner[i] != undefined) {
-            tmpMyName = tmpOwner[i];
-        }
+      if (tmpOwner[i] != undefined) {
+        tmpMyName = tmpOwner[i];
+      }
     }
     for (var i in resObj.lastDPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
-
-        if (resObj.lastDPS.Combatant[i].isPet && resObj.lastDPS.summonerMerge) {
-            if (resObj.lastDPS.Combatant["YOU"] != undefined) {
-                if (tmpMyName == resObj.lastDPS.Combatant[i].petOwner)
-                    resObj.lastDPS.Combatant["YOU"].merge(resObj.lastDPS.Combatant[i]);
-            }
-            if (resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner] != undefined) {
-                resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner].merge(resObj.lastDPS.Combatant[i]);
-            }
-            resObj.lastDPS.Combatant[i].visible = !1
-        } else {
-            resObj.lastDPS.Combatant[i].visible = !0
+      if (resObj.lastDPS.Combatant[i].isPet && resObj.lastDPS.summonerMerge) {
+        if (resObj.lastDPS.Combatant["YOU"] != undefined) {
+          if (tmpMyName == resObj.lastDPS.Combatant[i].petOwner)
+            resObj.lastDPS.Combatant["YOU"].merge(resObj.lastDPS.Combatant[i]);
         }
+        if (
+          resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner] !=
+          undefined
+        ) {
+          resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner].merge(
+            resObj.lastDPS.Combatant[i]
+          );
+        }
+        resObj.lastDPS.Combatant[i].visible = !1;
+      } else {
+        resObj.lastDPS.Combatant[i].visible = !0;
       }
     }
     var tmp = [];
     var r = 0;
     for (var i in resObj.lastDPS.Combatant) {
-        tmp.push({
-            key: resObj.lastDPS.Combatant[i][resObj.lastDPS.sortkey],
-            val: resObj.lastDPS.Combatant[i]
-        });
+      tmp.push({
+        key: resObj.lastDPS.Combatant[i][resObj.lastDPS.sortkey],
+        val: resObj.lastDPS.Combatant[i],
+      });
     }
     resObj.lastDPS.Combatant = {};
     if (resObj.lastDPS.sortvector)
-        tmp.sort(function(a, b) {
-            return b.key - resObj.lastDPS.key
-        });
-    else tmp.sort(function(a, b) {
-        return resObj.lastDPS.key - b.key
-    });
+      tmp.sort(function (a, b) {
+        return b.key - resObj.lastDPS.key;
+      });
+    else
+      tmp.sort(function (a, b) {
+        return resObj.lastDPS.key - b.key;
+      });
     var tmpMax = 0;
     for (var i in tmp) {
-        if (resObj.lastDPS.summonerMerge == true) {
-            if (tmp[i].val.Job != "AVA") {
-                if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
-                    tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
-            }
-        } else {
-            if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
-                tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
+      if (resObj.lastDPS.summonerMerge == true) {
+        if (tmp[i].val.Job != "AVA") {
+          if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
+            tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
         }
+      } else {
+        if (tmpMax < tmp[i].val[resObj.lastDPS.sortkey])
+          tmpMax = tmp[i].val[resObj.lastDPS.sortkey];
+      }
     }
     resObj.lastDPS.maxdamage = tmpMax;
     resObj.lastDPS.maxValue = tmpMax;
-  
+
     for (var i in tmp) {
-        resObj.lastDPS.Combatant[tmp[i].val.name] = tmp[i].val
+      resObj.lastDPS.Combatant[tmp[i].val.name] = tmp[i].val;
     }
     for (var i in resObj.lastDPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
-
-        if (!resObj.lastDPS.Combatant[i].visible) continue;
-        resObj.lastDPS.Combatant[i].rank = r++;
-        resObj.lastDPS.Combatant[i].maxdamage = resObj.lastDPS.maxdamage
-      }
+      if (!resObj.lastDPS.Combatant[i].visible) continue;
+      resObj.lastDPS.Combatant[i].rank = r++;
+      resObj.lastDPS.Combatant[i].maxdamage = resObj.lastDPS.maxdamage;
     }
-    resObj.lastDPS.partys = r
-    resObj.lastDPS.persons = resObj.lastDPS.Combatant
+    resObj.lastDPS.partys = r;
+    resObj.lastDPS.persons = resObj.lastDPS.Combatant;
   };
-  resObj.lastDPS.AttachPets = function() {
+  resObj.lastDPS.AttachPets = function () {
     resObj.lastDPS.summonerMerge = !0;
     for (var i in resObj.lastDPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
-        resObj.lastDPS.Combatant[i].returnOrigin();
-        resObj.lastDPS.Combatant[i].recalculate();
-        resObj.lastDPS.Combatant[i].parent = resObj.lastDPS
-  
-        if (resObj.lastDPS.Combatant[i].Job == "AVA") {
-            if (resObj.lastDPS.Combatant[i].petOwner == myName || resObj.lastDPS.Combatant[i].petOwner == tmpMyName)
-                var owner = resObj.lastDPS.Combatant['YOU']
-            else
-                var owner = resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner]
-  
-            if (resObj.lastDPS.Combatant[i].maxhitval > owner.mergedmaxhitval) {
-                owner.mergedmaxhitval = resObj.lastDPS.Combatant[i].maxhitval
-                owner.mergedmaxhitstr = resObj.lastDPS.Combatant[i].maxhitstr
-            }
-            if (resObj.lastDPS.Combatant[i].maxhealval > owner.mergedmaxhealval) {
-                owner.mergedmaxhealval = resObj.lastDPS.Combatant[i].maxhealval
-                owner.mergedmaxhealstr = resObj.lastDPS.Combatant[i].maxhealstr
-            }
+      resObj.lastDPS.Combatant[i].returnOrigin();
+      resObj.lastDPS.Combatant[i].recalculate();
+      resObj.lastDPS.Combatant[i].parent = resObj.lastDPS;
+
+      if (resObj.lastDPS.Combatant[i].Job == "AVA") {
+        if (
+          resObj.lastDPS.Combatant[i].petOwner == myName ||
+          resObj.lastDPS.Combatant[i].petOwner == tmpMyName
+        )
+          var owner = resObj.lastDPS.Combatant["YOU"];
+        else
+          var owner =
+            resObj.lastDPS.Combatant[resObj.lastDPS.Combatant[i].petOwner];
+
+        if (resObj.lastDPS.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+          owner.mergedmaxhitval = resObj.lastDPS.Combatant[i].maxhitval;
+          owner.mergedmaxhitstr = resObj.lastDPS.Combatant[i].maxhitstr;
         }
-  
+        if (resObj.lastDPS.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+          owner.mergedmaxhealval = resObj.lastDPS.Combatant[i].maxhealval;
+          owner.mergedmaxhealstr = resObj.lastDPS.Combatant[i].maxhealstr;
+        }
       }
     }
-  }
-    resObj.lastDPS.DetachPets = function() {
+  };
+  resObj.lastDPS.DetachPets = function () {
     resObj.lastDPS.summonerMerge = !1;
     for (var i in resObj.lastDPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
-        resObj.lastDPS.Combatant[i].returnOrigin();
-        resObj.lastDPS.Combatant[i].recalculate();
-        resObj.lastDPS.Combatant[i].parent = resObj.lastDPS
-        resObj.lastDPS.Combatant[i].mergedmaxhitval = resObj.lastDPS.Combatant[i].maxhitval
-        resObj.lastDPS.Combatant[i].mergedmaxhitstr = resObj.lastDPS.Combatant[i].maxhitstr
-        resObj.lastDPS.Combatant[i].mergedmaxhealval = resObj.lastDPS.Combatant[i].maxhealval
-        resObj.lastDPS.Combatant[i].mergedmaxhealstr = resObj.lastDPS.Combatant[i].maxhealstr
-      }
+      resObj.lastDPS.Combatant[i].returnOrigin();
+      resObj.lastDPS.Combatant[i].recalculate();
+      resObj.lastDPS.Combatant[i].parent = resObj.lastDPS;
+      resObj.lastDPS.Combatant[i].mergedmaxhitval =
+        resObj.lastDPS.Combatant[i].maxhitval;
+      resObj.lastDPS.Combatant[i].mergedmaxhitstr =
+        resObj.lastDPS.Combatant[i].maxhitstr;
+      resObj.lastDPS.Combatant[i].mergedmaxhealval =
+        resObj.lastDPS.Combatant[i].maxhealval;
+      resObj.lastDPS.Combatant[i].mergedmaxhealstr =
+        resObj.lastDPS.Combatant[i].maxhealstr;
     }
-  }
-    resObj.lastDPS.sortkeyChange = function(key) {
-    resObj.lastDPS.resort(key, !0)
   };
-    resObj.lastDPS.sortkeyChangeDesc = function(key) {
-    resObj.lastDPS.resort(key, !1)
+  resObj.lastDPS.sortkeyChange = function (key) {
+    resObj.lastDPS.resort(key, !0);
   };
-    resObj.lastDPS.resort = function(key, vector) {
+  resObj.lastDPS.sortkeyChangeDesc = function (key) {
+    resObj.lastDPS.resort(key, !1);
+  };
+  resObj.lastDPS.resort = function (key, vector) {
     if (key == undefined)
-        resObj.lastDPS.sortkey = activeSort(resObj.lastDPS.sortkey);
+      resObj.lastDPS.sortkey = activeSort(resObj.lastDPS.sortkey);
     else resObj.lastDPS.sortkey = activeSort(key);
-    if (vector == undefined)
-        vector = resObj.lastDPS.sortvector;
-    resObj.lastDPS.sort(vector)
+    if (vector == undefined) vector = resObj.lastDPS.sortvector;
+    resObj.lastDPS.sort(vector);
   };
 
-  resObj.lastHPS.sort = function(vector) {
-    if (vector != undefined)
-        resObj.lastHPS.sortvector = vector;
+  resObj.lastHPS.sort = function (vector) {
+    if (vector != undefined) resObj.lastHPS.sortvector = vector;
     if (resObj.lastHPS.summonerMerge) {
-        switch (resObj.lastHPS.sortkey) {
-            case "damage":
-                resObj.lastHPS.sortkey = "mergedDamage";
-                break;
-            case "healed":
-                resObj.lastHPS.sortkey = "mergedHealed";
-        }
+      switch (resObj.lastHPS.sortkey) {
+        case "damage":
+          resObj.lastHPS.sortkey = "mergedDamage";
+          break;
+        case "healed":
+          resObj.lastHPS.sortkey = "mergedHealed";
+      }
     }
-  
+
     var tmpOwner = [];
     var tmpUser = [];
-  
+
     for (var i in resObj.lastHPS.Combatant) {
-        if (resObj.lastHPS.Combatant[i].petOwner == "") {
-            tmpUser.push(resObj.lastHPS.Combatant[i].name);
-        } else {
-            tmpOwner.push(resObj.lastHPS.Combatant[i].petOwner);
-        }
+      if (resObj.lastHPS.Combatant[i].petOwner == "") {
+        tmpUser.push(resObj.lastHPS.Combatant[i].name);
+      } else {
+        tmpOwner.push(resObj.lastHPS.Combatant[i].petOwner);
+      }
     }
     for (var i in tmpUser) {
-        for (var j in tmpOwner) {
-            if (tmpUser[i] == tmpOwner[j]) {
-                delete tmpOwner[j];
-            }
+      for (var j in tmpOwner) {
+        if (tmpUser[i] == tmpOwner[j]) {
+          delete tmpOwner[j];
         }
+      }
     }
     tmpMyName = "";
     for (var i = 0; i < tmpOwner.length; i++) {
-        if (tmpOwner[i] != undefined) {
-            tmpMyName = tmpOwner[i];
-        }
+      if (tmpOwner[i] != undefined) {
+        tmpMyName = tmpOwner[i];
+      }
     }
     for (var i in resObj.lastHPS.Combatant) {
-        if (resObj.lastHPS.Combatant[i].isPet && resObj.lastHPS.summonerMerge) {
-            if (resObj.lastHPS.Combatant["YOU"] != undefined) {
-                if (tmpMyName == resObj.lastHPS.Combatant[i].petOwner)
-                    resObj.lastHPS.Combatant["YOU"].merge(resObj.lastHPS.Combatant[i]);
-            }
-            if (resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner] != undefined) {
-                resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner].merge(resObj.lastHPS.Combatant[i]);
-            }
-            resObj.lastHPS.Combatant[i].visible = !1
-        } else {
-            resObj.lastHPS.Combatant[i].visible = !0
+      if (resObj.lastHPS.Combatant[i].isPet && resObj.lastHPS.summonerMerge) {
+        if (resObj.lastHPS.Combatant["YOU"] != undefined) {
+          if (tmpMyName == resObj.lastHPS.Combatant[i].petOwner)
+            resObj.lastHPS.Combatant["YOU"].merge(resObj.lastHPS.Combatant[i]);
         }
+        if (
+          resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner] !=
+          undefined
+        ) {
+          resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner].merge(
+            resObj.lastHPS.Combatant[i]
+          );
+        }
+        resObj.lastHPS.Combatant[i].visible = !1;
+      } else {
+        resObj.lastHPS.Combatant[i].visible = !0;
+      }
     }
     var tmp = [];
     var r = 0;
     for (var i in resObj.lastHPS.Combatant) {
-        tmp.push({
-            key: resObj.lastHPS.Combatant[i][resObj.lastHPS.sortkey],
-            val: resObj.lastHPS.Combatant[i]
-        });
+      tmp.push({
+        key: resObj.lastHPS.Combatant[i][resObj.lastHPS.sortkey],
+        val: resObj.lastHPS.Combatant[i],
+      });
     }
     resObj.lastHPS.Combatant = {};
     if (resObj.lastHPS.sortvector)
-        tmp.sort(function(a, b) {
-            return b.key - resObj.lastHPS.key
-        });
-    else tmp.sort(function(a, b) {
-        return resObj.lastHPS.key - b.key
-    });
+      tmp.sort(function (a, b) {
+        return b.key - resObj.lastHPS.key;
+      });
+    else
+      tmp.sort(function (a, b) {
+        return resObj.lastHPS.key - b.key;
+      });
     var tmpMax = 0;
     for (var i in tmp) {
-        if (resObj.lastHPS.summonerMerge == true) {
-            if (tmp[i].val.Job != "AVA") {
-                if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
-                    tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
-            }
-        } else {
-            if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
-                tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
+      if (resObj.lastHPS.summonerMerge == true) {
+        if (tmp[i].val.Job != "AVA") {
+          if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
+            tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
         }
+      } else {
+        if (tmpMax < tmp[i].val[resObj.lastHPS.sortkey])
+          tmpMax = tmp[i].val[resObj.lastHPS.sortkey];
+      }
     }
     resObj.lastHPS.maxdamage = tmpMax;
     resObj.lastHPS.maxValue = tmpMax;
-  
+
     for (var i in tmp) {
-        resObj.lastHPS.Combatant[tmp[i].val.name] = tmp[i].val
+      resObj.lastHPS.Combatant[tmp[i].val.name] = tmp[i].val;
     }
     for (var i in resObj.lastHPS.Combatant) {
-        if (!resObj.lastHPS.Combatant[i].visible) continue;
-        resObj.lastHPS.Combatant[i].rank = r++;
-        resObj.lastHPS.Combatant[i].maxdamage = resObj.lastHPS.maxdamage
+      if (!resObj.lastHPS.Combatant[i].visible) continue;
+      resObj.lastHPS.Combatant[i].rank = r++;
+      resObj.lastHPS.Combatant[i].maxdamage = resObj.lastHPS.maxdamage;
     }
-    resObj.lastHPS.partys = r
-    resObj.lastHPS.persons = resObj.lastHPS.Combatant
+    resObj.lastHPS.partys = r;
+    resObj.lastHPS.persons = resObj.lastHPS.Combatant;
   };
-  resObj.lastHPS.AttachPets = function() {
+  resObj.lastHPS.AttachPets = function () {
     resObj.lastHPS.summonerMerge = !0;
     for (var i in resObj.lastHPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
+      resObj.lastHPS.Combatant[i].returnOrigin();
+      resObj.lastHPS.Combatant[i].recalculate();
+      resObj.lastHPS.Combatant[i].parent = resObj.lastHPS;
 
-        resObj.lastHPS.Combatant[i].returnOrigin();
-        resObj.lastHPS.Combatant[i].recalculate();
-        resObj.lastHPS.Combatant[i].parent = resObj.lastHPS
-  
-        if (resObj.lastHPS.Combatant[i].Job == "AVA") {
-            if (resObj.lastHPS.Combatant[i].petOwner == myName || resObj.lastHPS.Combatant[i].petOwner == tmpMyName)
-                var owner = resObj.lastHPS.Combatant['YOU']
-            else
-                var owner = resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner]
-  
-            if (resObj.lastHPS.Combatant[i].maxhitval > owner.mergedmaxhitval) {
-                owner.mergedmaxhitval = resObj.lastHPS.Combatant[i].maxhitval
-                owner.mergedmaxhitstr = resObj.lastHPS.Combatant[i].maxhitstr
-            }
-            if (resObj.lastHPS.Combatant[i].maxhealval > owner.mergedmaxhealval) {
-                owner.mergedmaxhealval = resObj.lastHPS.Combatant[i].maxhealval
-                owner.mergedmaxhealstr = resObj.lastHPS.Combatant[i].maxhealstr
-            }
+      if (resObj.lastHPS.Combatant[i].Job == "AVA") {
+        if (
+          resObj.lastHPS.Combatant[i].petOwner == myName ||
+          resObj.lastHPS.Combatant[i].petOwner == tmpMyName
+        )
+          var owner = resObj.lastHPS.Combatant["YOU"];
+        else
+          var owner =
+            resObj.lastHPS.Combatant[resObj.lastHPS.Combatant[i].petOwner];
+
+        if (resObj.lastHPS.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+          owner.mergedmaxhitval = resObj.lastHPS.Combatant[i].maxhitval;
+          owner.mergedmaxhitstr = resObj.lastHPS.Combatant[i].maxhitstr;
+        }
+        if (resObj.lastHPS.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+          owner.mergedmaxhealval = resObj.lastHPS.Combatant[i].maxhealval;
+          owner.mergedmaxhealstr = resObj.lastHPS.Combatant[i].maxhealstr;
         }
       }
-  
     }
-  }
-    resObj.lastHPS.DetachPets = function() {
+  };
+  resObj.lastHPS.DetachPets = function () {
     resObj.lastHPS.summonerMerge = !1;
     for (var i in resObj.lastHPS.Combatant) {
-      if(resObj.lastDPS.Combatant[i].displayName != "Limit Break"){
-
-        resObj.lastHPS.Combatant[i].returnOrigin();
-        resObj.lastHPS.Combatant[i].recalculate();
-        resObj.lastHPS.Combatant[i].parent = resObj.lastHPS
-        resObj.lastHPS.Combatant[i].mergedmaxhitval = resObj.lastHPS.Combatant[i].maxhitval
-        resObj.lastHPS.Combatant[i].mergedmaxhitstr = resObj.lastHPS.Combatant[i].maxhitstr
-        resObj.lastHPS.Combatant[i].mergedmaxhealval = resObj.lastHPS.Combatant[i].maxhealval
-        resObj.lastHPS.Combatant[i].mergedmaxhealstr = resObj.lastHPS.Combatant[i].maxhealstr
-      }
+      resObj.lastHPS.Combatant[i].returnOrigin();
+      resObj.lastHPS.Combatant[i].recalculate();
+      resObj.lastHPS.Combatant[i].parent = resObj.lastHPS;
+      resObj.lastHPS.Combatant[i].mergedmaxhitval =
+        resObj.lastHPS.Combatant[i].maxhitval;
+      resObj.lastHPS.Combatant[i].mergedmaxhitstr =
+        resObj.lastHPS.Combatant[i].maxhitstr;
+      resObj.lastHPS.Combatant[i].mergedmaxhealval =
+        resObj.lastHPS.Combatant[i].maxhealval;
+      resObj.lastHPS.Combatant[i].mergedmaxhealstr =
+        resObj.lastHPS.Combatant[i].maxhealstr;
     }
-  }
-    resObj.lastHPS.sortkeyChange = function(key) {
-    resObj.lastHPS.resort(key, !0)
   };
-    resObj.lastHPS.sortkeyChangeDesc = function(key) {
-    resObj.lastHPS.resort(key, !1)
+  resObj.lastHPS.sortkeyChange = function (key) {
+    resObj.lastHPS.resort(key, !0);
   };
-    resObj.lastHPS.resort = function(key, vector) {
+  resObj.lastHPS.sortkeyChangeDesc = function (key) {
+    resObj.lastHPS.resort(key, !1);
+  };
+  resObj.lastHPS.resort = function (key, vector) {
     if (key == undefined)
-        resObj.lastHPS.sortkey = activeSort(resObj.lastHPS.sortkey);
+      resObj.lastHPS.sortkey = activeSort(resObj.lastHPS.sortkey);
     else resObj.lastHPS.sortkey = activeSort(key);
-    if (vector == undefined)
-        vector = resObj.lastHPS.sortvector;
-    resObj.lastHPS.sort(vector)
+    if (vector == undefined) vector = resObj.lastHPS.sortvector;
+    resObj.lastHPS.sort(vector);
   };
 
   let dontTouch = {};
@@ -1491,31 +1496,36 @@ function addOverallData(counter) {
     });
   }
   rankArray = calculateRanks(rankArray);
+  console.log("rank calculated", rankArray);
   for (var d in resObj.lastDPS.persons) {
-    let b = rankArray.filter(i => i.name == resObj.lastDPS.persons[d].name)[0]
+    let b = rankArray.filter(
+      (i) => i.name == resObj.lastDPS.persons[d].name
+    )[0];
     resObj.lastDPS.persons[d].rank = b.dpsRank;
   }
   for (var d in resObj.lastHPS.persons) {
-    let b = rankArray.filter(i => i.name == resObj.lastHPS.persons[d].name)[0]
+    let b = rankArray.filter(
+      (i) => i.name == resObj.lastHPS.persons[d].name
+    )[0];
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
+  console.log("rank calculated", resObj);
 
-  
-  resObj.lastDPS.Combatant = resObj.lastDPS.persons
-  resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION
-  resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration
+  resObj.lastDPS.Combatant = resObj.lastDPS.persons;
+  resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
+  resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration;
   resObj.lastDPS.isActive = false;
-  resObj.lastDPS.partys = rankArray.length
-  resObj.lastDPS.sortKey = "mergedDamage"
-  resObj.lastDPS.sortvector = 1
-  resObj.lastHPS.Combatant = resObj.lastHPS.persons
-  resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION
-  resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration
+  resObj.lastDPS.partys = rankArray.length;
+  resObj.lastDPS.sortKey = "mergedDamage";
+  resObj.lastDPS.sortvector = 1;
+  resObj.lastHPS.Combatant = resObj.lastHPS.persons;
+  resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION;
+  resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration;
   resObj.lastHPS.isActive = false;
-  resObj.lastHPS.partys = rankArray.length
-  resObj.lastHPS.sortKey = "mergedHealed"
-  resObj.lastHPS.sortvector = 1
-  
+  resObj.lastHPS.partys = rankArray.length;
+  resObj.lastHPS.sortKey = "mergedHealed";
+  resObj.lastHPS.sortvector = 1;
+
   encounterArray.unshift({
     lastDPS: resObj.lastDPS,
     lastHPS: resObj.lastHPS,
@@ -1587,6 +1597,26 @@ function addOverallData(counter) {
 }
 
 function populateOuterObjects(a, b, init = false) {
+  for (const [key, value] of Object.entries(b.persons)) {
+    if(a.persons){
+      if(!a.persons[key]){
+        let person = b.persons[key];
+        let clone = (({ parent, ...person }) => person)(person);
+        a.persons[key] = JSON.parse(JSON.stringify(clone));
+      }
+    }
+  }
+  if(a.persons){
+    for (const [key, value] of Object.entries(a.persons)) {
+      if(b.persons){
+        if(!b.persons[key]){
+          let person = a.persons[key];
+          let clone = (({ parent, ...person }) => person)(person);
+          b.persons[key] = JSON.parse(JSON.stringify(clone));
+        }
+      }
+    }
+  }
   if (init) {
     a.Encounter["DAMAGE-b"] = b.Encounter["DAMAGE-b"];
     a.Encounter["DAMAGE-k"] = b.Encounter["DAMAGE-k"];
@@ -1703,30 +1733,28 @@ function populateInnerObjects(a, b, resObj) {
   a["crithealPct"] = pFloat((a.mergedCritheals / a.mergedHeals) * 100);
   a.tohit = pFloat((a.mergedHits / a.mergedSwings) * 100);
   a.mergedHealed = a.healed - a.overHeal;
-  a.parent=resObj.lastDPS
+  a.parent = resObj.lastDPS;
 
-  a.returnOrigin = function() {
+  a.returnOrigin = function () {
     for (var i in a.original) {
-        if (i.indexOf("Last") > -1)
-            a["merged" + i] = a[i];
-        else if (i == "CritDirectHitCount" || i == "DirectHitCount")
-            a["merged" + i] = a[i];
-        else a["merged" + i] = a[i.substr(0, 1).toLowerCase() + i.substr(1)]
+      if (i.indexOf("Last") > -1) a["merged" + i] = a[i];
+      else if (i == "CritDirectHitCount" || i == "DirectHitCount")
+        a["merged" + i] = a[i];
+      else a["merged" + i] = a[i.substr(0, 1).toLowerCase() + i.substr(1)];
     }
   };
-  a.merge = function(person) {
+  a.merge = function (person) {
     a.returnOrigin();
     a.pets[person.name] = person;
     for (var k in a.pets) {
-        for (var i in a.original) {
-            if (i.indexOf("Last") > -1)
-                a["merged" + i] += a.pets[k].original[i];
-            else a["merged" + i] += a.pets[k].original[i]
-        }
+      for (var i in a.original) {
+        if (i.indexOf("Last") > -1) a["merged" + i] += a.pets[k].original[i];
+        else a["merged" + i] += a.pets[k].original[i];
+      }
     }
-    a.recalculate()
+    a.recalculate();
   };
-  a.recalculate = function() {
+  a.recalculate = function () {
     var dur = a.DURATION;
     if (dur == 0) dur = 1;
     a.dps = pFloat(a.mergedDamage / dur);
@@ -1741,184 +1769,182 @@ function populateInnerObjects(a, b, resObj) {
     a.ENCHPS = Math.floor(a.enchps);
     a["ENCDPS-k"] = Math.floor(a.encdps / 1000);
     a["ENCHPS-k"] = Math.floor(a.enchps / 1000);
-    a["damagePct"] = pFloat(a.mergedDamage / a.parent.Encounter.damage * 100);
-    a["healedPct"] = pFloat(a.mergedHealed / a.parent.Encounter.healed * 100);
-    a["overHealPct"] = pFloat(a.mergedOverHeal / a.mergedHealed * 100);
-    a["crithitPct"] = pFloat(a.mergedCrithits / a.mergedHits * 100);
-    a["DirectHitPct"] = pFloat(a.mergedDirectHitCount / a.mergedHits * 100);
-    a["CritDirectHitPct"] = pFloat(a.mergedCritDirectHitCount / a.mergedHits * 100);
-    a["crithealPct"] = pFloat(a.mergedCritheals / a.mergedHeals * 100);
-    a.tohit = pFloat(a.mergedHits / a.mergedSwings * 100)
-    a.mergedHealed = a.healed - a.overHeal
+    a["damagePct"] = pFloat((a.mergedDamage / a.parent.Encounter.damage) * 100);
+    a["healedPct"] = pFloat((a.mergedHealed / a.parent.Encounter.healed) * 100);
+    a["overHealPct"] = pFloat((a.mergedOverHeal / a.mergedHealed) * 100);
+    a["crithitPct"] = pFloat((a.mergedCrithits / a.mergedHits) * 100);
+    a["DirectHitPct"] = pFloat((a.mergedDirectHitCount / a.mergedHits) * 100);
+    a["CritDirectHitPct"] = pFloat(
+      (a.mergedCritDirectHitCount / a.mergedHits) * 100
+    );
+    a["crithealPct"] = pFloat((a.mergedCritheals / a.mergedHeals) * 100);
+    a.tohit = pFloat((a.mergedHits / a.mergedSwings) * 100);
+    a.mergedHealed = a.healed - a.overHeal;
   };
-  a.get = function(key) {
+  a.get = function (key) {
     if (a.parent.summonerMerge) {
-        switch (key) {
-            case "damage":
-                key = "mergedDamage";
-                break;
-            case "healed":
-                key = "mergedHealed";
-                break;
-        }
+      switch (key) {
+        case "damage":
+          key = "mergedDamage";
+          break;
+        case "healed":
+          key = "mergedHealed";
+          break;
+      }
     }
-    return a[key]
-  }
-  a.rerank = function(vector) {
-  a.sort(vector)
-};
-  a.indexOf = function(person) {
-  var v = -1;
-  for (var i in a.Combatant) {
+    return a[key];
+  };
+  a.rerank = function (vector) {
+    a.sort(vector);
+  };
+  a.indexOf = function (person) {
+    var v = -1;
+    for (var i in a.Combatant) {
       v++;
-      if (i == person)
-          return v
-  }
-  return v
-};
-  a.sort = function(vector) {
-  if (vector != undefined)
-      a.sortvector = vector;
-  if (a.summonerMerge) {
+      if (i == person) return v;
+    }
+    return v;
+  };
+  a.sort = function (vector) {
+    if (vector != undefined) a.sortvector = vector;
+    if (a.summonerMerge) {
       switch (a.sortkey) {
-          case "damage":
-              a.sortkey = "mergedDamage";
-              break;
-          case "healed":
-              a.sortkey = "mergedHealed";
+        case "damage":
+          a.sortkey = "mergedDamage";
+          break;
+        case "healed":
+          a.sortkey = "mergedHealed";
       }
-  }
+    }
 
-  var tmpOwner = [];
-  var tmpUser = [];
+    var tmpOwner = [];
+    var tmpUser = [];
 
-  for (var i in a.Combatant) {
+    for (var i in a.Combatant) {
       if (a.Combatant[i].petOwner == "") {
-          tmpUser.push(a.Combatant[i].name);
+        tmpUser.push(a.Combatant[i].name);
       } else {
-          tmpOwner.push(a.Combatant[i].petOwner);
+        tmpOwner.push(a.Combatant[i].petOwner);
       }
-  }
-  for (var i in tmpUser) {
+    }
+    for (var i in tmpUser) {
       for (var j in tmpOwner) {
-          if (tmpUser[i] == tmpOwner[j]) {
-              delete tmpOwner[j];
-          }
+        if (tmpUser[i] == tmpOwner[j]) {
+          delete tmpOwner[j];
+        }
       }
-  }
-  tmpMyName = "";
-  for (var i = 0; i < tmpOwner.length; i++) {
+    }
+    tmpMyName = "";
+    for (var i = 0; i < tmpOwner.length; i++) {
       if (tmpOwner[i] != undefined) {
-          tmpMyName = tmpOwner[i];
+        tmpMyName = tmpOwner[i];
       }
-  }
-  for (var i in a.Combatant) {
+    }
+    for (var i in a.Combatant) {
       if (a.Combatant[i].isPet && a.summonerMerge) {
-          if (a.Combatant["YOU"] != undefined) {
-              if (tmpMyName == a.Combatant[i].petOwner)
-                  a.Combatant["YOU"].merge(a.Combatant[i]);
-          }
-          if (a.Combatant[a.Combatant[i].petOwner] != undefined) {
-              a.Combatant[a.Combatant[i].petOwner].merge(a.Combatant[i]);
-          }
-          a.Combatant[i].visible = !1
+        if (a.Combatant["YOU"] != undefined) {
+          if (tmpMyName == a.Combatant[i].petOwner)
+            a.Combatant["YOU"].merge(a.Combatant[i]);
+        }
+        if (a.Combatant[a.Combatant[i].petOwner] != undefined) {
+          a.Combatant[a.Combatant[i].petOwner].merge(a.Combatant[i]);
+        }
+        a.Combatant[i].visible = !1;
       } else {
-          a.Combatant[i].visible = !0
+        a.Combatant[i].visible = !0;
       }
-  }
-  var tmp = [];
-  var r = 0;
-  for (var i in a.Combatant) {
+    }
+    var tmp = [];
+    var r = 0;
+    for (var i in a.Combatant) {
       tmp.push({
-          key: a.Combatant[i][a.sortkey],
-          val: a.Combatant[i]
+        key: a.Combatant[i][a.sortkey],
+        val: a.Combatant[i],
       });
-  }
-  a.Combatant = {};
-  if (a.sortvector)
-      tmp.sort(function(a, b) {
-          return b.key - a.key
+    }
+    a.Combatant = {};
+    if (a.sortvector)
+      tmp.sort(function (a, b) {
+        return b.key - a.key;
       });
-  else tmp.sort(function(a, b) {
-      return a.key - b.key
-  });
-  var tmpMax = 0;
-  for (var i in tmp) {
+    else
+      tmp.sort(function (a, b) {
+        return a.key - b.key;
+      });
+    var tmpMax = 0;
+    for (var i in tmp) {
       if (a.summonerMerge == true) {
-          if (tmp[i].val.Job != "AVA") {
-              if (tmpMax < tmp[i].val[a.sortkey])
-                  tmpMax = tmp[i].val[a.sortkey];
-          }
+        if (tmp[i].val.Job != "AVA") {
+          if (tmpMax < tmp[i].val[a.sortkey]) tmpMax = tmp[i].val[a.sortkey];
+        }
       } else {
-          if (tmpMax < tmp[i].val[a.sortkey])
-              tmpMax = tmp[i].val[a.sortkey];
+        if (tmpMax < tmp[i].val[a.sortkey]) tmpMax = tmp[i].val[a.sortkey];
       }
-  }
-  a.maxdamage = tmpMax;
-  a.maxValue = tmpMax;
+    }
+    a.maxdamage = tmpMax;
+    a.maxValue = tmpMax;
 
-  for (var i in tmp) {
-      a.Combatant[tmp[i].val.name] = tmp[i].val
-  }
-  for (var i in a.Combatant) {
+    for (var i in tmp) {
+      a.Combatant[tmp[i].val.name] = tmp[i].val;
+    }
+    for (var i in a.Combatant) {
       if (!a.Combatant[i].visible) continue;
       a.Combatant[i].rank = r++;
-      a.Combatant[i].maxdamage = a.maxdamage
-  }
-  a.partys = r
-  a.persons = a.Combatant
-};
-  a.AttachPets = function() {
-  a.summonerMerge = !0;
-  for (var i in a.Combatant) {
+      a.Combatant[i].maxdamage = a.maxdamage;
+    }
+    a.partys = r;
+    a.persons = a.Combatant;
+  };
+  a.AttachPets = function () {
+    a.summonerMerge = !0;
+    for (var i in a.Combatant) {
       a.Combatant[i].returnOrigin();
       a.Combatant[i].recalculate();
-      a.Combatant[i].parent = a
+      a.Combatant[i].parent = a;
 
       if (a.Combatant[i].Job == "AVA") {
-          if (a.Combatant[i].petOwner == myName || a.Combatant[i].petOwner == tmpMyName)
-              var owner = a.Combatant['YOU']
-          else
-              var owner = a.Combatant[a.Combatant[i].petOwner]
+        if (
+          a.Combatant[i].petOwner == myName ||
+          a.Combatant[i].petOwner == tmpMyName
+        )
+          var owner = a.Combatant["YOU"];
+        else var owner = a.Combatant[a.Combatant[i].petOwner];
 
-          if (a.Combatant[i].maxhitval > owner.mergedmaxhitval) {
-              owner.mergedmaxhitval = a.Combatant[i].maxhitval
-              owner.mergedmaxhitstr = a.Combatant[i].maxhitstr
-          }
-          if (a.Combatant[i].maxhealval > owner.mergedmaxhealval) {
-              owner.mergedmaxhealval = a.Combatant[i].maxhealval
-              owner.mergedmaxhealstr = a.Combatant[i].maxhealstr
-          }
+        if (a.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+          owner.mergedmaxhitval = a.Combatant[i].maxhitval;
+          owner.mergedmaxhitstr = a.Combatant[i].maxhitstr;
+        }
+        if (a.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+          owner.mergedmaxhealval = a.Combatant[i].maxhealval;
+          owner.mergedmaxhealstr = a.Combatant[i].maxhealstr;
+        }
       }
-
-  }
-}
-  a.DetachPets = function() {
-  a.summonerMerge = !1;
-  for (var i in a.Combatant) {
+    }
+  };
+  a.DetachPets = function () {
+    a.summonerMerge = !1;
+    for (var i in a.Combatant) {
       a.Combatant[i].returnOrigin();
       a.Combatant[i].recalculate();
-      a.Combatant[i].parent = a
-      a.Combatant[i].mergedmaxhitval = a.Combatant[i].maxhitval
-      a.Combatant[i].mergedmaxhitstr = a.Combatant[i].maxhitstr
-      a.Combatant[i].mergedmaxhealval = a.Combatant[i].maxhealval
-      a.Combatant[i].mergedmaxhealstr = a.Combatant[i].maxhealstr
-  }
-}
-  a.sortkeyChange = function(key) {
-  a.resort(key, !0)
-};
-  a.sortkeyChangeDesc = function(key) {
-  a.resort(key, !1)
-};
-  a.resort = function(key, vector) {
-  if (key == undefined)
-      a.sortkey = activeSort(a.sortkey);
-  else a.sortkey = activeSort(key);
-  if (vector == undefined)
-      vector = a.sortvector;
-  a.sort(vector)
-};
+      a.Combatant[i].parent = a;
+      a.Combatant[i].mergedmaxhitval = a.Combatant[i].maxhitval;
+      a.Combatant[i].mergedmaxhitstr = a.Combatant[i].maxhitstr;
+      a.Combatant[i].mergedmaxhealval = a.Combatant[i].maxhealval;
+      a.Combatant[i].mergedmaxhealstr = a.Combatant[i].maxhealstr;
+    }
+  };
+  a.sortkeyChange = function (key) {
+    a.resort(key, !0);
+  };
+  a.sortkeyChangeDesc = function (key) {
+    a.resort(key, !1);
+  };
+  a.resort = function (key, vector) {
+    if (key == undefined) a.sortkey = activeSort(a.sortkey);
+    else a.sortkey = activeSort(key);
+    if (vector == undefined) vector = a.sortvector;
+    a.sort(vector);
+  };
 
   return a;
 }
