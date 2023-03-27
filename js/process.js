@@ -1598,6 +1598,9 @@ function addOverallData(counter) {
 
 function populateOuterObjects(a, b, init = false) {
   for (const [key, value] of Object.entries(b.persons)) {
+    if(b.persons[key].displayName == "Limit Break"){
+      b.persons[key].visible = false;
+    }
     if(a.persons){
       if(!a.persons[key]){
         let person = b.persons[key];
@@ -1608,6 +1611,9 @@ function populateOuterObjects(a, b, init = false) {
   }
   if(a.persons){
     for (const [key, value] of Object.entries(a.persons)) {
+      if(a.persons[key].displayName == "Limit Break"){
+        a.persons[key].visible = false;
+      }
       if(b.persons){
         if(!b.persons[key]){
           let person = a.persons[key];
