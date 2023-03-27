@@ -51,7 +51,7 @@ function update(lastDPS, lastHPS) {
   if (lastDPS.zone == "HAERU") {
     _ = "_P";
   } else _ = "";
-  if (!lastDPS.overallData) {
+  if (true) { //(!lastDPS.overallData) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
@@ -376,7 +376,7 @@ function createRaidTableBody(flag, a, userName) {
   );
 }
 function onCombatDataUpdate(flag, last) {
-  if (!last.overallData) {
+  if (true){ //(!last.overallData) {
     if (last.Combatant["YOU"] != undefined || last.Combatant["YOU"] != null) {
       var Height = 0;
       var tableHeader = document.getElementById(flag + "Header" + _);
@@ -1396,6 +1396,222 @@ function populateInnerObjects(a, b, resObj) {
   a["crithealPct"] = pFloat((a.mergedCritheals / a.mergedHeals) * 100);
   a.tohit = pFloat((a.mergedHits / a.mergedSwings) * 100);
   a.mergedHealed = a.healed - a.overHeal;
+
+  a.returnOrigin = function() {
+    for (var i in this.original) {
+        if (i.indexOf("Last") > -1)
+            this["merged" + i] = this[i];
+        else if (i == "CritDirectHitCount" || i == "DirectHitCount")
+            this["merged" + i] = this[i];
+        else this["merged" + i] = this[i.substr(0, 1).toLowerCase() + i.substr(1)]
+    }
+  };
+  a.merge = function(person) {
+    this.returnOrigin();
+    this.pets[person.name] = person;
+    for (var k in this.pets) {
+        for (var i in this.original) {
+            if (i.indexOf("Last") > -1)
+                this["merged" + i] += this.pets[k].original[i];
+            else this["merged" + i] += this.pets[k].original[i]
+        }
+    }
+    this.recalculate()
+  };
+  a.recalculate = function() {
+    var dur = this.DURATION;
+    if (dur == 0) dur = 1;
+    this.dps = pFloat(this.mergedDamage / dur);
+    this.encdps = pFloat(this.mergedDamage / this.parent.DURATION);
+    this.hps = pFloat(this.mergedHealed / dur);
+    this.enchps = pFloat(this.mergedHealed / this.parent.DURATION);
+    this["DAMAGE-k"] = Math.floor(this.mergedDamage / 1000);
+    this["DAMAGE-m"] = Math.floor(this.mergedDamage / 1000000);
+    this.DPS = Math.floor(this.dps);
+    this["DPS-k"] = Math.floor(this.dps / 1000);
+    this.ENCDPS = Math.floor(this.encdps);
+    this.ENCHPS = Math.floor(this.enchps);
+    this["ENCDPS-k"] = Math.floor(this.encdps / 1000);
+    this["ENCHPS-k"] = Math.floor(this.enchps / 1000);
+    this["damagePct"] = pFloat(this.mergedDamage / this.parent.Encounter.damage * 100);
+    this["healedPct"] = pFloat(this.mergedHealed / this.parent.Encounter.healed * 100);
+    this["overHealPct"] = pFloat(this.mergedOverHeal / this.mergedHealed * 100);
+    this["crithitPct"] = pFloat(this.mergedCrithits / this.mergedHits * 100);
+    this["DirectHitPct"] = pFloat(this.mergedDirectHitCount / this.mergedHits * 100);
+    this["CritDirectHitPct"] = pFloat(this.mergedCritDirectHitCount / this.mergedHits * 100);
+    this["crithealPct"] = pFloat(this.mergedCritheals / this.mergedHeals * 100);
+    this.tohit = pFloat(this.mergedHits / this.mergedSwings * 100)
+    this.mergedHealed = this.healed - this.overHeal
+  };
+  a.get = function(key) {
+    if (this.parent.summonerMerge) {
+        switch (key) {
+            case "damage":
+                key = "mergedDamage";
+                break;
+            case "healed":
+                key = "mergedHealed";
+                break;
+        }
+    }
+    return this[key]
+  }
+  a.rerank = function(vector) {
+  this.sort(vector)
+};
+  a.indexOf = function(person) {
+  var v = -1;
+  for (var i in this.Combatant) {
+      v++;
+      if (i == person)
+          return v
+  }
+  return v
+};
+  a.sort = function(vector) {
+  if (vector != undefined)
+      this.sortvector = vector;
+  if (this.summonerMerge) {
+      switch (this.sortkey) {
+          case "damage":
+              this.sortkey = "mergedDamage";
+              break;
+          case "healed":
+              this.sortkey = "mergedHealed";
+      }
+  }
+
+  var tmpOwner = [];
+  var tmpUser = [];
+
+  for (var i in this.Combatant) {
+      if (this.Combatant[i].petOwner == "") {
+          tmpUser.push(this.Combatant[i].name);
+      } else {
+          tmpOwner.push(this.Combatant[i].petOwner);
+      }
+  }
+  for (var i in tmpUser) {
+      for (var j in tmpOwner) {
+          if (tmpUser[i] == tmpOwner[j]) {
+              delete tmpOwner[j];
+          }
+      }
+  }
+  tmpMyName = "";
+  for (var i = 0; i < tmpOwner.length; i++) {
+      if (tmpOwner[i] != undefined) {
+          tmpMyName = tmpOwner[i];
+      }
+  }
+  for (var i in this.Combatant) {
+      if (this.Combatant[i].isPet && this.summonerMerge) {
+          if (this.Combatant["YOU"] != undefined) {
+              if (tmpMyName == this.Combatant[i].petOwner)
+                  this.Combatant["YOU"].merge(this.Combatant[i]);
+          }
+          if (this.Combatant[this.Combatant[i].petOwner] != undefined) {
+              this.Combatant[this.Combatant[i].petOwner].merge(this.Combatant[i]);
+          }
+          this.Combatant[i].visible = !1
+      } else {
+          this.Combatant[i].visible = !0
+      }
+  }
+  var tmp = [];
+  var r = 0;
+  for (var i in this.Combatant) {
+      tmp.push({
+          key: this.Combatant[i][this.sortkey],
+          val: this.Combatant[i]
+      });
+  }
+  this.Combatant = {};
+  if (this.sortvector)
+      tmp.sort(function(a, b) {
+          return b.key - a.key
+      });
+  else tmp.sort(function(a, b) {
+      return a.key - b.key
+  });
+  var tmpMax = 0;
+  for (var i in tmp) {
+      if (this.summonerMerge == true) {
+          if (tmp[i].val.Job != "AVA") {
+              if (tmpMax < tmp[i].val[this.sortkey])
+                  tmpMax = tmp[i].val[this.sortkey];
+          }
+      } else {
+          if (tmpMax < tmp[i].val[this.sortkey])
+              tmpMax = tmp[i].val[this.sortkey];
+      }
+  }
+  this.maxdamage = tmpMax;
+  this.maxValue = tmpMax;
+
+  for (var i in tmp) {
+      this.Combatant[tmp[i].val.name] = tmp[i].val
+  }
+  for (var i in this.Combatant) {
+      if (!this.Combatant[i].visible) continue;
+      this.Combatant[i].rank = r++;
+      this.Combatant[i].maxdamage = this.maxdamage
+  }
+  this.partys = r
+  this.persons = this.Combatant
+};
+  a.AttachPets = function() {
+  this.summonerMerge = !0;
+  for (var i in this.Combatant) {
+      this.Combatant[i].returnOrigin();
+      this.Combatant[i].recalculate();
+      this.Combatant[i].parent = this
+
+      if (this.Combatant[i].Job == "AVA") {
+          if (this.Combatant[i].petOwner == myName || this.Combatant[i].petOwner == tmpMyName)
+              var owner = this.Combatant['YOU']
+          else
+              var owner = this.Combatant[this.Combatant[i].petOwner]
+
+          if (this.Combatant[i].maxhitval > owner.mergedmaxhitval) {
+              owner.mergedmaxhitval = this.Combatant[i].maxhitval
+              owner.mergedmaxhitstr = this.Combatant[i].maxhitstr
+          }
+          if (this.Combatant[i].maxhealval > owner.mergedmaxhealval) {
+              owner.mergedmaxhealval = this.Combatant[i].maxhealval
+              owner.mergedmaxhealstr = this.Combatant[i].maxhealstr
+          }
+      }
+
+  }
+}
+  a.DetachPets = function() {
+  this.summonerMerge = !1;
+  for (var i in this.Combatant) {
+      this.Combatant[i].returnOrigin();
+      this.Combatant[i].recalculate();
+      this.Combatant[i].parent = this
+      this.Combatant[i].mergedmaxhitval = this.Combatant[i].maxhitval
+      this.Combatant[i].mergedmaxhitstr = this.Combatant[i].maxhitstr
+      this.Combatant[i].mergedmaxhealval = this.Combatant[i].maxhealval
+      this.Combatant[i].mergedmaxhealstr = this.Combatant[i].maxhealstr
+  }
+}
+  a.sortkeyChange = function(key) {
+  this.resort(key, !0)
+};
+  a.sortkeyChangeDesc = function(key) {
+  this.resort(key, !1)
+};
+  a.resort = function(key, vector) {
+  if (key == undefined)
+      this.sortkey = activeSort(this.sortkey);
+  else this.sortkey = activeSort(key);
+  if (vector == undefined)
+      vector = this.sortvector;
+  this.sort(vector)
+};
+
   return a;
 }
 
