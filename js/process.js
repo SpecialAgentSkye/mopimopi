@@ -1664,6 +1664,24 @@ function populateOuterObjects(a, b, init = false) {
         let person = b.persons[key];
         let clone = (({ parent, ...person }) => person)(person);
         a.persons[key] = JSON.parse(JSON.stringify(clone));
+        a.persons[key]["DAMAGE-b"] = 0 // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
+        a.persons[key]["DAMAGE-k"] = 0 // b["DAMAGE-k"];
+        a.persons[key]["DAMAGE-m"] = 0 // b["DAMAGE-m"];
+        a.persons[key]["DURATION"] = 0 // b["DURATION"];
+        a.persons[key]["damage"] = 0 // b["damage"];
+        a.persons[key]["damage-m"] = 0 // b["damage-m"];
+        a.persons[key]["healed"] = 0 // b["healed"];
+        a.persons[key]["swings"] = 0 // b["swings"];
+        a.persons[key]["mergedDamage"] = 0 // b["mergedDamage"];
+        a.persons[key]["mergedHealed"] = 0 // b["mergedHealed"];
+        a.persons[key]["mergedOverHeal"] = 0 // b["mergedOverHeal"];
+        a.persons[key]["mergedCrithits"] = 0 // b["mergedCrithits"];
+        a.persons[key]["mergedHits"] = 0 // b["mergedHits"];
+        a.persons[key]["mergedDirectHitCount"] = 0 // b["mergedDirectHitCount"];
+        a.persons[key]["mergedCritheals"] = 0 // b["mergedCritheals"];
+        a.persons[key]["mergedSwings"] = 0 // b["mergedSwings"];
+        a.persons[key]["overHeal"] = 0 // b["overHeal"];
+        a.persons[key]["deaths"] = 0 // b["deaths"];
       }
     }
   }
@@ -1674,6 +1692,24 @@ function populateOuterObjects(a, b, init = false) {
           let person = a.persons[key];
           let clone = (({ parent, ...person }) => person)(person);
           b.persons[key] = JSON.parse(JSON.stringify(clone));
+          b.persons[key]["DAMAGE-b"] = 0 // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
+          b.persons[key]["DAMAGE-k"] = 0 // b["DAMAGE-k"];
+          b.persons[key]["DAMAGE-m"] = 0 // b["DAMAGE-m"];
+          b.persons[key]["DURATION"] = 0 // b["DURATION"];
+          b.persons[key]["damage"] = 0 // b["damage"];
+          b.persons[key]["damage-m"] = 0 // b["damage-m"];
+          b.persons[key]["healed"] = 0 // b["healed"];
+          b.persons[key]["swings"] = 0 // b["swings"];
+          b.persons[key]["mergedDamage"] = 0 // b["mergedDamage"];
+          b.persons[key]["mergedHealed"] = 0 // b["mergedHealed"];
+          b.persons[key]["mergedOverHeal"] = 0 // b["mergedOverHeal"];
+          b.persons[key]["mergedCrithits"] = 0 // b["mergedCrithits"];
+          b.persons[key]["mergedHits"] = 0 // b["mergedHits"];
+          b.persons[key]["mergedDirectHitCount"] = 0 // b["mergedDirectHitCount"];
+          b.persons[key]["mergedCritheals"] = 0 // b["mergedCritheals"];
+          b.persons[key]["mergedSwings"] = 0 // b["mergedSwings"];
+          b.persons[key]["overHeal"] = 0 // b["overHeal"];
+          b.persons[key]["deaths"] = 0 // b["deaths"];
         }
       }
     }
