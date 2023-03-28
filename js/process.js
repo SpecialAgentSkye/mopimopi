@@ -1134,6 +1134,90 @@ function addOverallData(counter) {
     lastHPS: { Encounter: {}, overallData: true, title: "Overall Data" },
   };
 
+  let dontTouch = {};
+  if (relevantEncounters.length > 0) dontTouch = relevantEncounters[0];
+  resObj.lastDPS = populateOuterObjects(
+    resObj.lastDPS,
+    dontTouch.lastDPS,
+    true
+  );
+  resObj.lastHPS = populateOuterObjects(
+    resObj.lastHPS,
+    dontTouch.lastHPS,
+    true
+  );
+  for (let i = 1; i < relevantEncounters.length; i++) {
+    resObj.lastDPS = populateOuterObjects(
+      resObj.lastDPS,
+      relevantEncounters[i].lastDPS
+    );
+    resObj.lastHPS = populateOuterObjects(
+      resObj.lastHPS,
+      relevantEncounters[i].lastHPS
+    );
+
+    for (var d in resObj.lastDPS.persons) {
+      try {
+        var a = resObj.lastDPS.persons[d];
+        var b = relevantEncounters[i].lastDPS.persons[d];
+        a = populateInnerObjects(a, b, resObj);
+        var c = resObj.lastHPS.persons[d];
+        var d = relevantEncounters[i].lastHPS.persons[d];
+        c = populateInnerObjects(c, d, resObj);
+      } catch (err) {
+        console.log(err, [
+          resObj.lastDPS.persons[d],
+          relevantEncounters[i].lastDPS.persons[d],
+          resObj.lastHPS.persons[d],
+          relevantEncounters[i].lastHPS.persons[d],
+        ]);
+      }
+    }
+  }
+  let rankArray = [];
+  for (var d in resObj.lastDPS.persons) {
+    var a = resObj.lastDPS.persons[d];
+    rankArray.push({
+      name: a.name,
+      dps: a.ENCDPS,
+      dpsRank: 0,
+      hps: a.ENCHPS,
+      hpsRank: 0,
+    });
+  }
+  rankArray = calculateRanks(rankArray);
+  console.log("rank calculated", rankArray);
+  for (var d in resObj.lastDPS.persons) {
+    let b = rankArray.filter(
+      (i) => i.name == resObj.lastDPS.persons[d].name
+    )[0];
+    resObj.lastDPS.persons[d].rank = b.dpsRank;
+  }
+  for (var d in resObj.lastHPS.persons) {
+    let b = rankArray.filter(
+      (i) => i.name == resObj.lastHPS.persons[d].name
+    )[0];
+    resObj.lastHPS.persons[d].rank = b.hpsRank;
+  }
+  console.log("rank calculated", resObj);
+  
+  resObj.lastDPS.Combatant = resObj.lastDPS.persons;
+  resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
+  resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration;
+  resObj.lastDPS.isActive = false;
+  resObj.lastDPS.partys = rankArray.length;
+  resObj.lastDPS.sortKey = "mergedDamage";
+  resObj.lastDPS.sortvector = 1;
+  resObj.lastHPS.Combatant = resObj.lastHPS.persons;
+  resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION;
+  resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration;
+  resObj.lastHPS.isActive = false;
+  resObj.lastHPS.partys = rankArray.length;
+  resObj.lastHPS.sortKey = "mergedHealed";
+  resObj.lastHPS.sortvector = 1;
+
+  //IGNORE THIS
+  
   resObj.lastDPS.sort = function (vector) {
     if (vector != undefined) resObj.lastDPS.sortvector = vector;
     if (resObj.lastDPS.summonerMerge) {
@@ -1443,88 +1527,7 @@ function addOverallData(counter) {
     if (vector == undefined) vector = resObj.lastHPS.sortvector;
     resObj.lastHPS.sort(vector);
   };
-
-  let dontTouch = {};
-  if (relevantEncounters.length > 0) dontTouch = relevantEncounters[0];
-  resObj.lastDPS = populateOuterObjects(
-    resObj.lastDPS,
-    dontTouch.lastDPS,
-    true
-  );
-  resObj.lastHPS = populateOuterObjects(
-    resObj.lastHPS,
-    dontTouch.lastHPS,
-    true
-  );
-  for (let i = 1; i < relevantEncounters.length; i++) {
-    resObj.lastDPS = populateOuterObjects(
-      resObj.lastDPS,
-      relevantEncounters[i].lastDPS
-    );
-    resObj.lastHPS = populateOuterObjects(
-      resObj.lastHPS,
-      relevantEncounters[i].lastHPS
-    );
-
-    for (var d in resObj.lastDPS.persons) {
-      try {
-        var a = resObj.lastDPS.persons[d];
-        var b = relevantEncounters[i].lastDPS.persons[d];
-        a = populateInnerObjects(a, b, resObj);
-        var c = resObj.lastHPS.persons[d];
-        var d = relevantEncounters[i].lastHPS.persons[d];
-        c = populateInnerObjects(c, d, resObj);
-      } catch (err) {
-        console.log(err, [
-          resObj.lastDPS.persons[d],
-          relevantEncounters[i].lastDPS.persons[d],
-          resObj.lastHPS.persons[d],
-          relevantEncounters[i].lastHPS.persons[d],
-        ]);
-      }
-    }
-  }
-  let rankArray = [];
-  for (var d in resObj.lastDPS.persons) {
-    var a = resObj.lastDPS.persons[d];
-    rankArray.push({
-      name: a.name,
-      dps: a.ENCDPS,
-      dpsRank: 0,
-      hps: a.ENCHPS,
-      hpsRank: 0,
-    });
-  }
-  rankArray = calculateRanks(rankArray);
-  console.log("rank calculated", rankArray);
-  for (var d in resObj.lastDPS.persons) {
-    let b = rankArray.filter(
-      (i) => i.name == resObj.lastDPS.persons[d].name
-    )[0];
-    resObj.lastDPS.persons[d].rank = b.dpsRank;
-  }
-  for (var d in resObj.lastHPS.persons) {
-    let b = rankArray.filter(
-      (i) => i.name == resObj.lastHPS.persons[d].name
-    )[0];
-    resObj.lastHPS.persons[d].rank = b.hpsRank;
-  }
-  console.log("rank calculated", resObj);
   
-  resObj.lastDPS.Combatant = resObj.lastDPS.persons;
-  resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
-  resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration;
-  resObj.lastDPS.isActive = false;
-  resObj.lastDPS.partys = rankArray.length;
-  resObj.lastDPS.sortKey = "mergedDamage";
-  resObj.lastDPS.sortvector = 1;
-  resObj.lastHPS.Combatant = resObj.lastHPS.persons;
-  resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION;
-  resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration;
-  resObj.lastHPS.isActive = false;
-  resObj.lastHPS.partys = rankArray.length;
-  resObj.lastHPS.sortKey = "mergedHealed";
-  resObj.lastHPS.sortvector = 1;
   resObj.lastDPS.resort("damage", 1);
   resObj.lastHPS.resort("healed", 1);
 
