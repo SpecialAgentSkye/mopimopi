@@ -833,8 +833,13 @@ Combatant.prototype.sort = function(vector) {
 Combatant.prototype.AttachPets = function() {
     this.summonerMerge = !0;
     for (var i in this.Combatant) {
-        this.Combatant[i].returnOrigin();
-        this.Combatant[i].recalculate();
+        try{
+            this.Combatant[i].returnOrigin();
+            this.Combatant[i].recalculate();
+        } catch(err){
+            console.log(err)
+        }
+
         this.Combatant[i].parent = this
 
         if (this.Combatant[i].Job == "AVA") {
