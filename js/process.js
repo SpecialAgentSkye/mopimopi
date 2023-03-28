@@ -417,7 +417,7 @@ function onCombatDataUpdate(flag, last) {
               (init.q.HPS_M == 1 && a.role == "Crafter") ||
               (init.q.HPS_M == 1 && a.role == "Gathering")
             ) {
-              /*a["healed%"] = pFloat(
+              a["healed%"] = pFloat(
                 (a.mergedHealed / (a.parent.Encounter.healed - totalOverheal)) *
                   100
               );
@@ -430,7 +430,7 @@ function onCombatDataUpdate(flag, last) {
                 ((a.healed - a.overHeal) / a.parent.DURATION)
                   .nanFix()
                   .toFixed(underDot)
-              );*/
+              );
               //a.hps = parseFloat(((a.healed - a.overHeal) / a.parent.DURATION).nanFix().toFixed(underDot))
               createTableBody(userName, flag, newBody, a);
               if (Height < parseFloat(bodyHeight * init.Range.sizeHPSTable)) {
