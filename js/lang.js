@@ -1,8 +1,8 @@
 l = {
     Notice: {
         strong: {
-            KR: '<b style="color:#ffea00">모피모피<br>놀라운 커스터마이징을 경험하세요!</b><br><br>모바일 환경에서는 <b>크롬 또는 사파리</b> 앱을 권장합니다.<br>PC 유저는 <b>오버레이 프로세스 관리자 ❯ 드래그 영역 사용 체크</b> 필수입니다.<br><br><font style="color:cyan">FFXIV_ACT_Plugin.dll 2.0.2.3 버전 이상을 사용하는 유저는<br>ACT → Plugins → FFXIV Settings Tab → <b>Disable Combine Pets with Owner</b> 옵션을 체크합니다.</font><br><br>Please select <b>your language</b> : <a href="#" id="KR" onclick="initOverlay(this.id)">한국어</a> ❘ <a href="#" id="EN" onclick="initOverlay(this.id)">English</a> ❘ <a href="#" id="JP" onclick="initOverlay(this.id)">日本語</a> ❘ <a href="#" id="CN" onclick="initOverlay(this.id)">中國語</a> ❘ <a href="#" id="DE" onclick="initOverlay(this.id)">Deutsch</a> ❘ <a href="#" id="FR" onclick="initOverlay(this.id)">French</a><br>',
-            EN: '<b style="color:#ffea00">MopiMopi<br>Experience the Incredible Customizing!</b><br><br><b>Chrome or Safari</b> apps are recommended for mobile environment.<br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br><br><font style="color:cyan">If you are using FFXIV_ACT_Plugin version 2.0.2.3 or later,<br>ACT → Plugins → FFXIV Settings Tab → <b>Check Disable Combine Pets with Owner</b>.</font><br><br>Please select <b>your language</b> : <a href="#" id="KR" onclick="initOverlay(this.id)">한국어</a> ❘ <a href="#" id="EN" onclick="initOverlay(this.id)">English</a> ❘ <a href="#" id="JP" onclick="initOverlay(this.id)">日本語</a> ❘ <a href="#" id="CN" onclick="initOverlay(this.id)">中國語</a> ❘ <a href="#" id="DE" onclick="initOverlay(this.id)">Deutsch</a> ❘ <a href="#" id="FR" onclick="initOverlay(this.id)">French</a><br>'
+            KR: '<b style="color:#ffea00">MopiMopi Skye Edit<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>',
+            EN: '<b style="color:#ffea00">MopiMopi Skye Edit<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>'
         },
         tip: {
             KR: '[OFFICIAL] MopiMopi ver.239SkyeEdit',
@@ -302,14 +302,6 @@ l = {
                 CN: "语言"
             },
             m: {
-                KR: {
-                    KR: "한국어",
-                    JP: "한국어",
-                    EN: "한국어",
-                    FR: "한국어",
-                    DE: "한국어",
-                    CN: "한국어",
-                },
                 EN: {
                     KR: "English",
                     JP: "English",
@@ -318,7 +310,7 @@ l = {
                     DE: "English",
                     CN: "English",
                 },
-                JP: {
+                /*JP: {
                     KR: "日本語<font class='ex'>　❙ by Korea [모그리] 오후의홍차, 이카루가</font>",
                     JP: "日本語<font class='ex'>　❙ by Korea [모그리] 오후의홍차, 이카루가</font>",
                     EN: "日本語<font class='ex'>　❙ by Korea [모그리] 오후의홍차, 이카루가</font>",
@@ -342,6 +334,14 @@ l = {
                     DE: "Deutsch<font class='ex'>　❙ by Chaos [Phoenix] Shunittseru Tohka</font>",
                     CN: "Deutsch<font class='ex'>　❙ by Chaos [Phoenix] Shunittseru Tohka</font>"
                 },
+                KR: {
+                    KR: "한국어",
+                    JP: "한국어",
+                    EN: "한국어",
+                    FR: "한국어",
+                    DE: "한국어",
+                    CN: "한국어",
+                },
                 FR: {
                     KR: "French<font class='ex'>　❙ by Light [Shiva] Elarun Moyse</font>",
                     JP: "French<font class='ex'>　❙ by Light [Shiva] Elarun Moyse</font>",
@@ -349,7 +349,7 @@ l = {
                     FR: "French<font class='ex'>　❙ by Light [Shiva] Elarun Moyse</font>",
                     DE: "French<font class='ex'>　❙ by Light [Shiva] Elarun Moyse</font>",
                     CN: "French<font class='ex'>　❙ by Light [Shiva] Elarun Moyse</font>",
-                }
+                }*/
             },
             i: "language",
             e: "li_radio",
