@@ -1046,7 +1046,6 @@ function historyAddRow() {
     } else {
       encounterCount = 1;
       td.innerText = encounterCount;
-      console.log(encounterArray);
       //Handle overall
       let estimatedOverallHTML = wrap.querySelectorAll(
         `[id^="${encounterArray[1].lastDPS.Encounter.CurrentZoneName}"]`
@@ -1186,7 +1185,6 @@ function addOverallData(counter) {
     });
   }
   rankArray = calculateRanks(rankArray);
-  console.log("rank calculated", rankArray);
   for (var d in resObj.lastDPS.persons) {
     let b = rankArray.filter(
       (i) => i.name == resObj.lastDPS.persons[d].name
@@ -1199,7 +1197,6 @@ function addOverallData(counter) {
     )[0];
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
-  console.log("rank calculated", resObj);
   
   resObj.lastDPS.Combatant = resObj.lastDPS.persons;
   resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
