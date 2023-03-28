@@ -637,6 +637,11 @@ Person.prototype.merge = function(person) {
     this.recalculate()
 };
 Person.prototype.recalculate = function() {
+    var totalOverheal = 0;
+    for (var d in this.parent.persons) {
+      var a = this.parent.persons[d];
+      totalOverheal += a.overHeal;
+    }
     var dur = this.DURATION;
     if (dur == 0) dur = 1;
     this.dps = pFloat(this.mergedDamage / dur);
@@ -652,7 +657,7 @@ Person.prototype.recalculate = function() {
     this["ENCDPS-k"] = Math.floor(this.encdps / 1000);
     this["ENCHPS-k"] = Math.floor(this.enchps / 1000);
     this["damagePct"] = pFloat(this.mergedDamage / this.parent.Encounter.damage * 100);
-    this["healedPct"] = pFloat(this.mergedHealed - this.overHeal / this.parent.Encounter.healed * 100);
+    this["healedPct"] = pFloat(this.mergedHealed - this.overHeal / (this.parent.Encounter.healed - totalOverheal) * 100);
     this["overHealPct"] = pFloat(this.mergedOverHeal / this.mergedHealed * 100);
     this["crithitPct"] = pFloat(this.mergedCrithits / this.mergedHits * 100);
     this["DirectHitPct"] = pFloat(this.mergedDirectHitCount / this.mergedHits * 100);
