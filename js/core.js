@@ -647,17 +647,13 @@ Person.prototype.recalculate = function() {
     this.dps = pFloat(this.mergedDamage / dur);
     this.encdps = pFloat(this.mergedDamage / this.parent.DURATION);
     this.hps = pFloat(this.mergedHealed / dur);
-    this.enchps = pFloat(this.mergedHealed / this.parent.DURATION);
     this["DAMAGE-k"] = Math.floor(this.mergedDamage / 1000);
     this["DAMAGE-m"] = Math.floor(this.mergedDamage / 1000000);
     this.DPS = Math.floor(this.dps);
     this["DPS-k"] = Math.floor(this.dps / 1000);
     this.ENCDPS = Math.floor(this.encdps);
-    this.ENCHPS = Math.floor(this.enchps);
     this["ENCDPS-k"] = Math.floor(this.encdps / 1000);
-    this["ENCHPS-k"] = Math.floor(this.enchps / 1000);
     this["damagePct"] = pFloat(this.mergedDamage / this.parent.Encounter.damage * 100);
-    this["healedPct"] = pFloat(this.mergedHealed - this.overHeal / (this.parent.Encounter.healed - totalOverheal) * 100);
     this["overHealPct"] = pFloat(this.mergedOverHeal / this.mergedHealed * 100);
     this["crithitPct"] = pFloat(this.mergedCrithits / this.mergedHits * 100);
     this["DirectHitPct"] = pFloat(this.mergedDirectHitCount / this.mergedHits * 100);
@@ -665,6 +661,22 @@ Person.prototype.recalculate = function() {
     this["crithealPct"] = pFloat(this.mergedCritheals / this.mergedHeals * 100);
     this.tohit = pFloat(this.mergedHits / this.mergedSwings * 100)
     this.mergedHealed = this.healed - this.overHeal
+    this["healedPct"] = pFloat(
+        (this.mergedHealed / (this.parent.Encounter.healed - totalOverheal)) *
+          100
+      );
+    this["healed%"] = pFloat(
+        (this.mergedHealed / (this.parent.Encounter.healed - totalOverheal)) *
+        100
+    );
+    this.enchps = parseFloat(
+        ((this.healed - this.overHeal) / this.parent.DURATION)
+          .nanFix()
+          .toFixed(underDot)
+      );
+    this.ENCHPS = Math.floor(this.enchps);
+    this["ENCHPS-k"] = Math.floor(this.enchps / 1000);
+
 };
 Person.prototype.get = function(key) {
     if (this.parent.summonerMerge) {
