@@ -1527,7 +1527,7 @@ function addOverallData(counter) {
     if (vector == undefined) vector = resObj.lastHPS.sortvector;
     resObj.lastHPS.sort(vector);
   };
-  
+
   resObj.lastDPS.resort("damage", 1);
   resObj.lastHPS.resort("healed", 1);
 
@@ -1777,51 +1777,12 @@ function populateInnerObjects(a, b, resObj) {
   a.mergedHealed = a.healed - a.overHeal;
   a.parent = resObj.lastDPS;
 
-  a.returnOrigin = function () {
-    for (var i in a.original) {
-      if (i.indexOf("Last") > -1) a["merged" + i] = a[i];
-      else if (i == "CritDirectHitCount" || i == "DirectHitCount")
-        a["merged" + i] = a[i];
-      else a["merged" + i] = a[i.substr(0, 1).toLowerCase() + i.substr(1)];
-    }
+  a.returnOrigin = function () {//do nothing
   };
-  a.merge = function (person) {
-    a.returnOrigin();
-    a.pets[person.name] = person;
-    for (var k in a.pets) {
-      for (var i in a.original) {
-        if (i.indexOf("Last") > -1) a["merged" + i] += a.pets[k].original[i];
-        else a["merged" + i] += a.pets[k].original[i];
-      }
-    }
-    a.recalculate();
+  a.merge = function (person) {//do nothing
   };
   a.recalculate = function () {
-    var dur = a.DURATION;
-    if (dur == 0) dur = 1;
-    a.dps = pFloat(a.mergedDamage / dur);
-    a.encdps = pFloat(a.mergedDamage / a.parent.DURATION);
-    a.hps = pFloat(a.mergedHealed / dur);
-    a.enchps = pFloat(a.mergedHealed / a.parent.DURATION);
-    a["DAMAGE-k"] = Math.floor(a.mergedDamage / 1000);
-    a["DAMAGE-m"] = Math.floor(a.mergedDamage / 1000000);
-    a.DPS = Math.floor(a.dps);
-    a["DPS-k"] = Math.floor(a.dps / 1000);
-    a.ENCDPS = Math.floor(a.encdps);
-    a.ENCHPS = Math.floor(a.enchps);
-    a["ENCDPS-k"] = Math.floor(a.encdps / 1000);
-    a["ENCHPS-k"] = Math.floor(a.enchps / 1000);
-    a["damagePct"] = pFloat((a.mergedDamage / a.parent.Encounter.damage) * 100);
-    a["healedPct"] = pFloat((a.mergedHealed / a.parent.Encounter.healed) * 100);
-    a["overHealPct"] = pFloat((a.mergedOverHeal / a.mergedHealed) * 100);
-    a["crithitPct"] = pFloat((a.mergedCrithits / a.mergedHits) * 100);
-    a["DirectHitPct"] = pFloat((a.mergedDirectHitCount / a.mergedHits) * 100);
-    a["CritDirectHitPct"] = pFloat(
-      (a.mergedCritDirectHitCount / a.mergedHits) * 100
-    );
-    a["crithealPct"] = pFloat((a.mergedCritheals / a.mergedHeals) * 100);
-    a.tohit = pFloat((a.mergedHits / a.mergedSwings) * 100);
-    a.mergedHealed = a.healed - a.overHeal;
+    //do nothing
   };
   a.get = function (key) {
     if (a.parent.summonerMerge) {
@@ -1848,144 +1809,17 @@ function populateInnerObjects(a, b, resObj) {
     return v;
   };
   a.sort = function (vector) {
-    if (vector != undefined) a.sortvector = vector;
-    if (a.summonerMerge) {
-      switch (a.sortkey) {
-        case "damage":
-          a.sortkey = "mergedDamage";
-          break;
-        case "healed":
-          a.sortkey = "mergedHealed";
-      }
-    }
-
-    var tmpOwner = [];
-    var tmpUser = [];
-
-    for (var i in a.Combatant) {
-      if (a.Combatant[i].petOwner == "") {
-        tmpUser.push(a.Combatant[i].name);
-      } else {
-        tmpOwner.push(a.Combatant[i].petOwner);
-      }
-    }
-    for (var i in tmpUser) {
-      for (var j in tmpOwner) {
-        if (tmpUser[i] == tmpOwner[j]) {
-          delete tmpOwner[j];
-        }
-      }
-    }
-    tmpMyName = "";
-    for (var i = 0; i < tmpOwner.length; i++) {
-      if (tmpOwner[i] != undefined) {
-        tmpMyName = tmpOwner[i];
-      }
-    }
-    for (var i in a.Combatant) {
-      if (a.Combatant[i].isPet && a.summonerMerge) {
-        if (a.Combatant["YOU"] != undefined) {
-          if (tmpMyName == a.Combatant[i].petOwner)
-            a.Combatant["YOU"].merge(a.Combatant[i]);
-        }
-        if (a.Combatant[a.Combatant[i].petOwner] != undefined) {
-          a.Combatant[a.Combatant[i].petOwner].merge(a.Combatant[i]);
-        }
-        a.Combatant[i].visible = !1;
-      } else {
-        a.Combatant[i].visible = !0;
-      }
-    }
-    var tmp = [];
-    var r = 0;
-    for (var i in a.Combatant) {
-      tmp.push({
-        key: a.Combatant[i][a.sortkey],
-        val: a.Combatant[i],
-      });
-    }
-    a.Combatant = {};
-    if (a.sortvector)
-      tmp.sort(function (a, b) {
-        return b.key - a.key;
-      });
-    else
-      tmp.sort(function (a, b) {
-        return a.key - b.key;
-      });
-    var tmpMax = 0;
-    for (var i in tmp) {
-      if (a.summonerMerge == true) {
-        if (tmp[i].val.Job != "AVA") {
-          if (tmpMax < tmp[i].val[a.sortkey]) tmpMax = tmp[i].val[a.sortkey];
-        }
-      } else {
-        if (tmpMax < tmp[i].val[a.sortkey]) tmpMax = tmp[i].val[a.sortkey];
-      }
-    }
-    a.maxdamage = tmpMax;
-    a.maxValue = tmpMax;
-
-    for (var i in tmp) {
-      a.Combatant[tmp[i].val.name] = tmp[i].val;
-    }
-    for (var i in a.Combatant) {
-      if (!a.Combatant[i].visible) continue;
-      a.Combatant[i].rank = r++;
-      a.Combatant[i].maxdamage = a.maxdamage;
-    }
-    a.partys = r;
-    a.persons = a.Combatant;
+    //do nothing
   };
-  a.AttachPets = function () {
-    a.summonerMerge = !0;
-    for (var i in a.Combatant) {
-      a.Combatant[i].returnOrigin();
-      a.Combatant[i].recalculate();
-      a.Combatant[i].parent = a;
-
-      if (a.Combatant[i].Job == "AVA") {
-        if (
-          a.Combatant[i].petOwner == myName ||
-          a.Combatant[i].petOwner == tmpMyName
-        )
-          var owner = a.Combatant["YOU"];
-        else var owner = a.Combatant[a.Combatant[i].petOwner];
-
-        if (a.Combatant[i].maxhitval > owner.mergedmaxhitval) {
-          owner.mergedmaxhitval = a.Combatant[i].maxhitval;
-          owner.mergedmaxhitstr = a.Combatant[i].maxhitstr;
-        }
-        if (a.Combatant[i].maxhealval > owner.mergedmaxhealval) {
-          owner.mergedmaxhealval = a.Combatant[i].maxhealval;
-          owner.mergedmaxhealstr = a.Combatant[i].maxhealstr;
-        }
-      }
-    }
+  a.AttachPets = function () {//do nothing
   };
-  a.DetachPets = function () {
-    a.summonerMerge = !1;
-    for (var i in a.Combatant) {
-      a.Combatant[i].returnOrigin();
-      a.Combatant[i].recalculate();
-      a.Combatant[i].parent = a;
-      a.Combatant[i].mergedmaxhitval = a.Combatant[i].maxhitval;
-      a.Combatant[i].mergedmaxhitstr = a.Combatant[i].maxhitstr;
-      a.Combatant[i].mergedmaxhealval = a.Combatant[i].maxhealval;
-      a.Combatant[i].mergedmaxhealstr = a.Combatant[i].maxhealstr;
-    }
+  a.DetachPets = function () {//do nothing
   };
-  a.sortkeyChange = function (key) {
-    a.resort(key, !0);
+  a.sortkeyChange = function (key) {//do nothing
   };
-  a.sortkeyChangeDesc = function (key) {
-    a.resort(key, !1);
+  a.sortkeyChangeDesc = function (key) {//do nothing
   };
-  a.resort = function (key, vector) {
-    if (key == undefined) a.sortkey = activeSort(a.sortkey);
-    else a.sortkey = activeSort(key);
-    if (vector == undefined) vector = a.sortvector;
-    a.sort(vector);
+  a.resort = function (key, vector) {//do nothing
   };
 
   return a;
