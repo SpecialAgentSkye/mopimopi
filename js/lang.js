@@ -10,7 +10,7 @@ l = {
         },
         update: {
             KR: '<div name="row"><div class="c">05/22</div><div class="m">We back in this bish. No more wrong healing meters.</div></div>',
-            EN: '<div name="row"><div name="row"><div class="c">March 14th</div><div class="m">Added Expressway as a font (use Expressway Rg)</div></div><div name="row"><div class="c">March 14th</div><div class="m">Added overall data to history view</div></div><div name="row"><div class="c">March 13th</div><div class="m">Added background color setting</div></div><div name="row"><div class="c">March 12th</div><div class="m">We back in this bish. No more wrong healing meters.</div></div></div>'
+            EN: '<div name="row"><div name="row"><div class="c">March 28</div><div class="m">Fixed overall data handling and display issues. Missing: Ranking</div></div><div name="row"><div class="c">March 14th</div><div class="m">Added Expressway as a font (use Expressway Rg)</div></div><div name="row"><div class="c">March 14th</div><div class="m">Added overall data to history view</div></div><div name="row"><div class="c">March 13th</div><div class="m">Added background color setting</div></div><div name="row"><div class="c">March 12th</div><div class="m">We back in this bish. No more wrong healing meters.</div></div></div>'
         }
     },
     msg: {
