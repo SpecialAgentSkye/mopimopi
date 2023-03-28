@@ -56,25 +56,17 @@ function update(lastDPS, lastHPS) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
+      lastDPS.resort("damage", 1);
       lastHPS.summonerMerge = false;
       lastHPS.DetachPets();
-      if(!lastDPS.overallData){
-        lastDPS.resort("damage", 1);
-      }
-      if(!lastHPS.overallData){
-        lastHPS.resort("healed", 1);
-      }
+      lastHPS.resort("healed", 1);
     } else {
       lastDPS.summonerMerge = true;
       lastDPS.AttachPets();
+      lastDPS.resort("mergedDamage", 1);
       lastHPS.summonerMerge = true;
       lastHPS.AttachPets();
-      if(!lastDPS.overallData){
-        lastDPS.resort("mergedDamage", 1);
-      }
-      if(!lastHPS.overallData){
-        lastHPS.resort("mergedHealed", 1);
-      }
+      lastHPS.resort("mergedHealed", 1);
     }
     if (init.q.act == 2) {
       $("nav table[name=ACT_2line]").fadeIn(0);
@@ -1205,24 +1197,25 @@ function addOverallData(counter) {
     )[0];
     resObj.lastHPS.persons[d].rank = b.hpsRank;
   }
-  
-  resObj.lastDPS.Combatant = resObj.lastDPS.persons;
+
   resObj.lastDPS.DURATION = resObj.lastDPS.Encounter.DURATION;
   resObj.lastDPS.duration = resObj.lastDPS.Encounter.duration;
   resObj.lastDPS.isActive = false;
   resObj.lastDPS.partys = rankArray.length;
   resObj.lastDPS.sortKey = "mergedDamage";
   resObj.lastDPS.sortvector = 1;
-  resObj.lastHPS.Combatant = resObj.lastHPS.persons;
   resObj.lastHPS.DURATION = resObj.lastHPS.Encounter.DURATION;
   resObj.lastHPS.duration = resObj.lastHPS.Encounter.duration;
   resObj.lastHPS.isActive = false;
   resObj.lastHPS.partys = rankArray.length;
   resObj.lastHPS.sortKey = "mergedHealed";
   resObj.lastHPS.sortvector = 1;
+  resObj.lastDPS.Combatant = resObj.lastDPS.persons;
+  resObj.lastHPS.Combatant = resObj.lastHPS.persons;
+
 
   //IGNORE THIS
-  
+
   resObj.lastDPS.sort = function (vector) {
     if (vector != undefined) resObj.lastDPS.sortvector = vector;
     if (resObj.lastDPS.summonerMerge) {
@@ -1664,57 +1657,57 @@ function populateOuterObjects(a, b, init = false) {
   }
 
   for (const [key, value] of Object.entries(b.persons)) {
-    if(a.persons){
-      if(!a.persons[key]){
+    if (a.persons) {
+      if (!a.persons[key]) {
         let person = b.persons[key];
         let clone = (({ parent, ...person }) => person)(person);
         a.persons[key] = JSON.parse(JSON.stringify(clone));
-        a.persons[key]["DAMAGE-b"] = 0 // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
-        a.persons[key]["DAMAGE-k"] = 0 // b["DAMAGE-k"];
-        a.persons[key]["DAMAGE-m"] = 0 // b["DAMAGE-m"];
-        a.persons[key]["DURATION"] = 0 // b["DURATION"];
-        a.persons[key]["damage"] = 0 // b["damage"];
-        a.persons[key]["damage-m"] = 0 // b["damage-m"];
-        a.persons[key]["healed"] = 0 // b["healed"];
-        a.persons[key]["swings"] = 0 // b["swings"];
-        a.persons[key]["mergedDamage"] = 0 // b["mergedDamage"];
-        a.persons[key]["mergedHealed"] = 0 // b["mergedHealed"];
-        a.persons[key]["mergedOverHeal"] = 0 // b["mergedOverHeal"];
-        a.persons[key]["mergedCrithits"] = 0 // b["mergedCrithits"];
-        a.persons[key]["mergedHits"] = 0 // b["mergedHits"];
-        a.persons[key]["mergedDirectHitCount"] = 0 // b["mergedDirectHitCount"];
-        a.persons[key]["mergedCritheals"] = 0 // b["mergedCritheals"];
-        a.persons[key]["mergedSwings"] = 0 // b["mergedSwings"];
-        a.persons[key]["overHeal"] = 0 // b["overHeal"];
-        a.persons[key]["deaths"] = 0 // b["deaths"];
+        a.persons[key]["DAMAGE-b"] = 0; // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
+        a.persons[key]["DAMAGE-k"] = 0; // b["DAMAGE-k"];
+        a.persons[key]["DAMAGE-m"] = 0; // b["DAMAGE-m"];
+        a.persons[key]["DURATION"] = 0; // b["DURATION"];
+        a.persons[key]["damage"] = 0; // b["damage"];
+        a.persons[key]["damage-m"] = 0; // b["damage-m"];
+        a.persons[key]["healed"] = 0; // b["healed"];
+        a.persons[key]["swings"] = 0; // b["swings"];
+        a.persons[key]["mergedDamage"] = 0; // b["mergedDamage"];
+        a.persons[key]["mergedHealed"] = 0; // b["mergedHealed"];
+        a.persons[key]["mergedOverHeal"] = 0; // b["mergedOverHeal"];
+        a.persons[key]["mergedCrithits"] = 0; // b["mergedCrithits"];
+        a.persons[key]["mergedHits"] = 0; // b["mergedHits"];
+        a.persons[key]["mergedDirectHitCount"] = 0; // b["mergedDirectHitCount"];
+        a.persons[key]["mergedCritheals"] = 0; // b["mergedCritheals"];
+        a.persons[key]["mergedSwings"] = 0; // b["mergedSwings"];
+        a.persons[key]["overHeal"] = 0; // b["overHeal"];
+        a.persons[key]["deaths"] = 0; // b["deaths"];
       }
     }
   }
-  if(a.persons){
+  if (a.persons) {
     for (const [key, value] of Object.entries(a.persons)) {
-      if(b.persons){
-        if(!b.persons[key]){
+      if (b.persons) {
+        if (!b.persons[key]) {
           let person = a.persons[key];
           let clone = (({ parent, ...person }) => person)(person);
           b.persons[key] = JSON.parse(JSON.stringify(clone));
-          b.persons[key]["DAMAGE-b"] = 0 // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
-          b.persons[key]["DAMAGE-k"] = 0 // b["DAMAGE-k"];
-          b.persons[key]["DAMAGE-m"] = 0 // b["DAMAGE-m"];
-          b.persons[key]["DURATION"] = 0 // b["DURATION"];
-          b.persons[key]["damage"] = 0 // b["damage"];
-          b.persons[key]["damage-m"] = 0 // b["damage-m"];
-          b.persons[key]["healed"] = 0 // b["healed"];
-          b.persons[key]["swings"] = 0 // b["swings"];
-          b.persons[key]["mergedDamage"] = 0 // b["mergedDamage"];
-          b.persons[key]["mergedHealed"] = 0 // b["mergedHealed"];
-          b.persons[key]["mergedOverHeal"] = 0 // b["mergedOverHeal"];
-          b.persons[key]["mergedCrithits"] = 0 // b["mergedCrithits"];
-          b.persons[key]["mergedHits"] = 0 // b["mergedHits"];
-          b.persons[key]["mergedDirectHitCount"] = 0 // b["mergedDirectHitCount"];
-          b.persons[key]["mergedCritheals"] = 0 // b["mergedCritheals"];
-          b.persons[key]["mergedSwings"] = 0 // b["mergedSwings"];
-          b.persons[key]["overHeal"] = 0 // b["overHeal"];
-          b.persons[key]["deaths"] = 0 // b["deaths"];
+          b.persons[key]["DAMAGE-b"] = 0; // b["DAMAGE-b"] ? b["DAMAGE-b"] : 0;
+          b.persons[key]["DAMAGE-k"] = 0; // b["DAMAGE-k"];
+          b.persons[key]["DAMAGE-m"] = 0; // b["DAMAGE-m"];
+          b.persons[key]["DURATION"] = 0; // b["DURATION"];
+          b.persons[key]["damage"] = 0; // b["damage"];
+          b.persons[key]["damage-m"] = 0; // b["damage-m"];
+          b.persons[key]["healed"] = 0; // b["healed"];
+          b.persons[key]["swings"] = 0; // b["swings"];
+          b.persons[key]["mergedDamage"] = 0; // b["mergedDamage"];
+          b.persons[key]["mergedHealed"] = 0; // b["mergedHealed"];
+          b.persons[key]["mergedOverHeal"] = 0; // b["mergedOverHeal"];
+          b.persons[key]["mergedCrithits"] = 0; // b["mergedCrithits"];
+          b.persons[key]["mergedHits"] = 0; // b["mergedHits"];
+          b.persons[key]["mergedDirectHitCount"] = 0; // b["mergedDirectHitCount"];
+          b.persons[key]["mergedCritheals"] = 0; // b["mergedCritheals"];
+          b.persons[key]["mergedSwings"] = 0; // b["mergedSwings"];
+          b.persons[key]["overHeal"] = 0; // b["overHeal"];
+          b.persons[key]["deaths"] = 0; // b["deaths"];
         }
       }
     }
@@ -1779,9 +1772,16 @@ function populateInnerObjects(a, b, resObj) {
   a.mergedHealed = a.healed - a.overHeal;
   a.parent = resObj.lastDPS;
 
-  a.returnOrigin = function () {//do nothing
+  a.returnOrigin = function () {
+    for (var i in a.original) {
+      if (i.indexOf("Last") > -1) a["merged" + i] = a[i];
+      else if (i == "CritDirectHitCount" || i == "DirectHitCount")
+        a["merged" + i] = a[i];
+      else a["merged" + i] = a[i.substr(0, 1).toLowerCase() + i.substr(1)];
+    }
   };
-  a.merge = function (person) {//do nothing
+  a.merge = function (person) {
+    //do nothing
   };
   a.recalculate = function () {
     //do nothing
@@ -1813,15 +1813,20 @@ function populateInnerObjects(a, b, resObj) {
   a.sort = function (vector) {
     //do nothing
   };
-  a.AttachPets = function () {//do nothing
+  a.AttachPets = function () {
+    //do nothing
   };
-  a.DetachPets = function () {//do nothing
+  a.DetachPets = function () {
+    //do nothing
   };
-  a.sortkeyChange = function (key) {//do nothing
+  a.sortkeyChange = function (key) {
+    //do nothing
   };
-  a.sortkeyChangeDesc = function (key) {//do nothing
+  a.sortkeyChangeDesc = function (key) {
+    //do nothing
   };
-  a.resort = function (key, vector) {//do nothing
+  a.resort = function (key, vector) {
+    //do nothing
   };
 
   return a;
