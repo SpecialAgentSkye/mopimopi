@@ -5,8 +5,8 @@ l = {
             EN: '<b style="color:#ffea00">MopiMopi<br>Experience the Incredible Customizing!</b><br><br><b>Chrome or Safari</b> apps are recommended for mobile environment.<br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br><br><font style="color:cyan">If you are using FFXIV_ACT_Plugin version 2.0.2.3 or later,<br>ACT → Plugins → FFXIV Settings Tab → <b>Check Disable Combine Pets with Owner</b>.</font><br><br>Please select <b>your language</b> : <a href="#" id="KR" onclick="initOverlay(this.id)">한국어</a> ❘ <a href="#" id="EN" onclick="initOverlay(this.id)">English</a> ❘ <a href="#" id="JP" onclick="initOverlay(this.id)">日本語</a> ❘ <a href="#" id="CN" onclick="initOverlay(this.id)">中國語</a> ❘ <a href="#" id="DE" onclick="initOverlay(this.id)">Deutsch</a> ❘ <a href="#" id="FR" onclick="initOverlay(this.id)">French</a><br>'
         },
         tip: {
-            KR: '[OFFICIAL] MopiMopi ver.234SkyeEdit',
-            EN: '[OFFICIAL] MopiMopi ver.234SkyeEdit'
+            KR: '[OFFICIAL] MopiMopi ver.239SkyeEdit',
+            EN: '[OFFICIAL] MopiMopi ver.239SkyeEdit'
         },
         update: {
             KR: '<div name="row"><div class="c">05/22</div><div class="m">We back in this bish. No more wrong healing meters.</div></div>',
@@ -415,12 +415,12 @@ l = {
                 CN: "版本",
             },
             m: {
-                KR: 'MopiMopi ver.234SkyeEdit',
-                JP: 'MopiMopi ver.234SkyeEdit',
-                EN: 'MopiMopi ver.234SkyeEdit',
-                FR: 'MopiMopi ver.234SkyeEdit',
-                DE: 'MopiMopi ver.234SkyeEdit',
-                CN: "MopiMopi ver.234SkyeEdit",
+                KR: 'MopiMopi ver.239SkyeEdit',
+                JP: 'MopiMopi ver.239SkyeEdit',
+                EN: 'MopiMopi ver.239SkyeEdit',
+                FR: 'MopiMopi ver.239SkyeEdit',
+                DE: 'MopiMopi ver.239SkyeEdit',
+                CN: "MopiMopi ver.239SkyeEdit",
             },
             i: "new_releases",
             e: "li_2line",
