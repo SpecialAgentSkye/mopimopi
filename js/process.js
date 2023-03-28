@@ -56,17 +56,25 @@ function update(lastDPS, lastHPS) {
     if (init.q.pets == 0) {
       lastDPS.summonerMerge = false;
       lastDPS.DetachPets();
-      lastDPS.resort("damage", 1);
       lastHPS.summonerMerge = false;
       lastHPS.DetachPets();
-      lastHPS.resort("healed", 1);
+      if(!lastDPS.overallData){
+        lastDPS.resort("damage", 1);
+      }
+      if(!lastHPS.overallData){
+        lastHPS.resort("healed", 1);
+      }
     } else {
       lastDPS.summonerMerge = true;
       lastDPS.AttachPets();
-      lastDPS.resort("mergedDamage", 1);
       lastHPS.summonerMerge = true;
       lastHPS.AttachPets();
-      lastHPS.resort("mergedHealed", 1);
+      if(!lastDPS.overallData){
+        lastDPS.resort("mergedDamage", 1);
+      }
+      if(!lastHPS.overallData){
+        lastHPS.resort("mergedHealed", 1);
+      }
     }
     if (init.q.act == 2) {
       $("nav table[name=ACT_2line]").fadeIn(0);
@@ -1524,9 +1532,6 @@ function addOverallData(counter) {
     if (vector == undefined) vector = resObj.lastHPS.sortvector;
     resObj.lastHPS.sort(vector);
   };
-
-  resObj.lastDPS.resort("damage", 1);
-  resObj.lastHPS.resort("healed", 1);
 
   encounterArray.unshift({
     lastDPS: resObj.lastDPS,
