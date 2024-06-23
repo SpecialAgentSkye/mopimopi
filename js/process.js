@@ -48,8 +48,9 @@ function onOverlayDataUpdate(e) {
 }
 
 function update(lastDPS, lastHPS) {
-  var container = $('#dpsContainer');
-  var scrollTop = container.scrollTop();
+  var dpsScrollTop = $('#DPSBody').scrollTop();
+  var hpsScrollTop = $('#HPSBody').scrollTop();
+  
   if (lastDPS.zone == "HAERU") {
     _ = "_P";
   } else _ = "";
@@ -296,7 +297,8 @@ function update(lastDPS, lastHPS) {
     }
   }
   ui();
-  container.scrollTop(scrollTop);
+  $('#DPSBody').scrollTop(dpsScrollTop);
+  $('#HPSBody').scrollTop(hpsScrollTop);
 }
 
 $("div[name=main]").wrapInner('<div id="dpsContainer"></div>');

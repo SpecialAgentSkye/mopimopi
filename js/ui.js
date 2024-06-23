@@ -286,12 +286,11 @@ function showWrap() {
 }
 
 function showUnhideMessage() {
-    $('#unhideMessage').fadeIn(350);
+    $('#unhideMessage').fadeIn(0);
     $('#unhideMessage').text("Click to unhide");
 }
 
 function hideUnhideMessage() {
-    $('#unhideMessage').fadeOut(0);
     $('#unhideMessage').text("");
 }
 
