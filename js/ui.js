@@ -244,26 +244,7 @@ function hiddenTable() {
     $('.toast').removeClass('on');
     $('.toast').fadeOut(0);
     if (init.q.autoHide && view != 'settings') {
-        if (lastCombat != null) {
-            if (String(lastCombat.isActive) == "true") {
-                if (view == 'history')
-                    hideWrap()
-                else
-                    showWrap()
-            } else {
-                if (view == 'history')
-                    showWrap()
-                else
-                showWrap()
-                time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
-            }
-        } else {
-            if (view == 'history')
-                showWrap()
-            else
-                showWrap()
-            time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
-        }
+        time = setTimeout(hideWrap, init.Range.autoHideTime * 6000);
     }
 }
 
