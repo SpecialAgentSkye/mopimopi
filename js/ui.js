@@ -252,7 +252,6 @@ function hiddenTable() {
 function hideWrap() {
     $('#wrap').fadeOut(0);
     $('#unhideMessage').fadeIn(150);
-    $('#hideIcon').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
 
     $(document).on('mousemove', showUnhideMessage).on('mouseleave', hideUnhideMessage).on('click', showWrap);
