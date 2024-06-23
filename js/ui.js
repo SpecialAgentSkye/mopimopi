@@ -91,7 +91,8 @@ function initOverlay(val) {
     if (init.q.arrow)
         $('#wrap').css({ 'background-image': 'url(./images/handle.svg)' })
     if(init.q.backgroundColor)
-        document.body.style.backgroundColor = "rgba(0,0,0,0.5)";
+        $('#wrap').css({ 'background-color': 'rgba(0,0,0,0.5)' })
+        //document.body.style.backgroundColor = "rgba(0,0,0,0.5)";
     ui()
 }
 $('.scrollArea').scroll(function() {
@@ -257,13 +258,11 @@ function hiddenTable() {
                 time = setTimeout(function() {
                         if (view == 'history'){
                             $('div[name=history]').fadeOut(150)
-                            document.body.style.backgroundColor = "rgba(0,0,0,0)";
                         }
                         else {
                             if ($('#blackBg').css('display') == "block")
                                 $('#blackBg').trigger('click')
                             $('div[name=main]').fadeOut(150)
-                            document.body.style.backgroundColor = "rgba(0,0,0,0)";
                         }
                         callToast('hiddenTable', 0, 3000)
                     }, init.Range.autoHideTime * 60000) 
@@ -278,13 +277,11 @@ function hiddenTable() {
             time = setTimeout(function() {
                     if (view == 'history'){
                         $('div[name=history]').fadeOut(150)
-                        document.body.style.backgroundColor = "rgba(0,0,0,0)";
                     }
                     else {
                         if ($('#blackBg').css('display') == "block")
                             $('#blackBg').trigger('click')
                         $('div[name=notice]').fadeOut(150)
-                        document.body.style.backgroundColor = "rgba(0,0,0,0.5)";
                     }
                     callToast('hiddenTable', 0, 3000)
                 }, init.Range.autoHideTime * 60000) 
@@ -835,9 +832,11 @@ function button(id, direction) {
                 ctrlPreview(0)
                 localStorage.setItem('Mopi2_HAERU', JSON.stringify(init))
                 if(init.q.backgroundColor)
-                    document.body.style.backgroundColor = "rgba(0,0,0,0.5)";
+                    $('#wrap').css({ 'background-color': 'rgba(0,0,0,0.5)' })
+                    //document.body.style.backgroundColor = "rgba(0,0,0,0.5)";
                 else 
-                    document.body.style.backgroundColor = "";
+                    $('#wrap').css({ 'background-color': 'rgba(0,0,0,0)' })
+                    //document.body.style.backgroundColor = "";
                 $('.previewArea, .tabArea, .scrollArea').html('') 
                 if (lastCombat != null) {
                     //오버레이가 계속 갱신되므로 해당부분 제거

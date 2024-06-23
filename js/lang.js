@@ -2,7 +2,7 @@ l = {
     Notice: {
         strong: {
             KR: '<b style="color:#ffea00">MopiMopi Skye Edit<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>',
-            EN: '<b style="color:#ffea00">MopiMopi Skye Edit 2<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>'
+            EN: '<b style="color:#ffea00">MopiMopi Skye Edit<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>'
         },
         tip: {
             KR: '[UNOFFICIAL] MopiMopi ver.239SkyeEdit',
