@@ -238,56 +238,57 @@ $("html").unbind("click").bind("click", function() {
     } else
         clearTimeout(time)
 })
-function hiddenTable() {    
-    clearTimeout(time)
-    $('.toast').removeClass('on')
+function hiddenTable() {
+    clearTimeout(time);
+    $('.toast').removeClass('on');
     $('.toast').fadeOut(0);
-    if (init.q.autoHide && view != 'settings') {        
-        if (lastCombat != null) {            
-            if (String(lastCombat.isActive) == "true") {                
+    if (init.q.autoHide && view != 'settings') {
+        if (lastCombat != null) {
+            if (String(lastCombat.isActive) == "true") {
                 if (view == 'history')
-                    $('div[name=history]').fadeOut(0)
+                    hideWrap()
                 else
-                    $('div[name=main]').fadeIn(0)
-            }            
-            else {                
+                    showWrap()
+            } else {
                 if (view == 'history')
-                    $('div[name=history]').fadeIn(0)
+                    showWrap()
                 else
-                    $('div[name=main]').fadeIn(0)                    
-                time = setTimeout(function() {
-                        if (view == 'history'){
-                            $('div[name=history]').fadeOut(150)
-                        }
-                        else {
-                            if ($('#blackBg').css('display') == "block")
-                                $('#blackBg').trigger('click')
-                            $('div[name=main]').fadeOut(150)
-                        }
-                        callToast('hiddenTable', 0, 3000)
-                    }, init.Range.autoHideTime * 60000) 
+                showWrap()
+                time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
             }
-        }        
-        else {
+        } else {
             if (view == 'history')
-                $('div[name=history]').fadeIn(0)
+                showWrap()
             else
-                $('div[name=notice]').fadeIn(0)
-                
-            time = setTimeout(function() {
-                    if (view == 'history'){
-                        $('div[name=history]').fadeOut(150)
-                    }
-                    else {
-                        if ($('#blackBg').css('display') == "block")
-                            $('#blackBg').trigger('click')
-                        $('div[name=notice]').fadeOut(150)
-                    }
-                    callToast('hiddenTable', 0, 3000)
-                }, init.Range.autoHideTime * 60000) 
+                showWrap()
+            time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
         }
     }
 }
+
+function hideWrap() {
+    $('#wrap').fadeOut(150);
+    $('#unhideMessage').fadeIn(150);
+    callToast('hiddenTable', 0, 3000);
+}
+
+function showWrap() {
+    $('#wrap').fadeIn(0);
+    $('#unhideMessage').fadeOut(0);
+    resetHideTimer();
+}
+
+function resetHideTimer() {
+    clearTimeout(time);
+    time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
+}
+
+$('#unhideMessage').on('mouseover', function() {
+    $(this).text("Click to unhide");
+}).on('click', function() {
+    showWrap();
+});
+
 function ctrlPreview(flag) {
     if (flag == true) {
         init.q.preview = 1;
