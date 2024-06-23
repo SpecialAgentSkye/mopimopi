@@ -252,9 +252,10 @@ function hiddenTable() {
 function hideWrap() {
     $('#wrap').fadeOut(0);
     $('#unhideMessage').fadeIn(150);
+    $('#hideIcon').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
 
-    $(document).on('mousemove', showUnhideMessage).on('mouseout', hideUnhideMessage).on('click', showWrap);
+    $(document).on('mousemove', showUnhideMessage).on('mouseleave', hideUnhideMessage).on('click', showWrap);
     $('#unhideMessage').on('click', showWrap);
 }
 
@@ -264,16 +265,19 @@ function showWrap() {
     resetHideTimer();
 
     $(document).off('mousemove', showUnhideMessage);
-    $(document).off('mouseout', hideUnhideMessage);
+    $(document).off('mouseleave', hideUnhideMessage);
     $(document).off('click', showWrap);
     $('#unhideMessage').off('click', showWrap);
 }
 
 function showUnhideMessage() {
     $('#unhideMessage').fadeIn(0);
+    $('#hideIcon').fadeIn(0);
 }
 
 function hideUnhideMessage() {
+    $('#unhideMessage').fadeOut(150);
+    $('#hideIcon').fadeOut(150);
 }
 
 function resetHideTimer() {
@@ -282,6 +286,7 @@ function resetHideTimer() {
 }
 
 $('#unhideMessage').hide();
+$('#hideIcon').hide();
 
 function ctrlPreview(flag) {
     if (flag == true) {
