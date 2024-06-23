@@ -290,6 +290,7 @@ function resetHideTimer() {
     time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
 }
 
+$('#visibility_button').on('click', hideWrap);
 $('#unhideMessage').hide();
 $('#hideIcon').hide();
 
