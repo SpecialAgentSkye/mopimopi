@@ -3,6 +3,7 @@ var init = new Object(),
     parent = '',
     view = 'main', 
     time = 0,
+    hideTimer = 0,
     toast = 0 
 var sVal = { 
         now: 0, 
@@ -254,7 +255,7 @@ function hideWrap() {
     $('#unhideMessage').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
 
-    $(document).on('mousemove', showUnhideMessage).on('mouseleave', hideUnhideMessage).on('click', showWrap);
+    $(document).on('mousemove', showUnhideMessage).on('mouseleave', startHideTimer).on('click', showWrap);
     $('#unhideMessage').on('click', showWrap);
 }
 
@@ -264,14 +265,19 @@ function showWrap() {
     resetHideTimer();
 
     $(document).off('mousemove', showUnhideMessage);
-    $(document).off('mouseleave', hideUnhideMessage);
+    $(document).off('mouseleave', startHideTimer);
     $(document).off('click', showWrap);
     $('#unhideMessage').off('click', showWrap);
 }
 
 function showUnhideMessage() {
+    clearTimeout(hideTimer)
     $('#unhideMessage').fadeIn(0);
     $('#hideIcon').fadeIn(0);
+}
+
+function startHideTimer() {
+    hideTimer = setTimeout(hideUnhideMessage, 3000);
 }
 
 function hideUnhideMessage() {
