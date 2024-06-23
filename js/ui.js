@@ -270,12 +270,27 @@ function hideWrap() {
     $('#wrap').fadeOut(150);
     $('#unhideMessage').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
+
+    $(document).on('mousemove', showUnhideMessage);
+    $('#unhideMessage').on('mouseover', function() {
+        $(this).text("Click to unhide");
+    }).on('mouseout', function() {
+        $(this).text("");
+    }).on('click', showWrap);
 }
 
 function showWrap() {
     $('#wrap').fadeIn(0);
     $('#unhideMessage').fadeOut(0);
     resetHideTimer();
+
+    $(document).off('mousemove', showUnhideMessage);
+    $('#unhideMessage').off('mouseover').off('mouseout').off('click');
+}
+
+function showUnhideMessage() {
+    $('#unhideMessage').fadeIn(150);
+    $(document).off('mousemove', showUnhideMessage);
 }
 
 function resetHideTimer() {
@@ -283,11 +298,7 @@ function resetHideTimer() {
     time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
 }
 
-$('#unhideMessage').on('mouseover', function() {
-    $(this).text("Click to unhide");
-}).on('click', function() {
-    showWrap();
-});
+$('#unhideMessage').hide();
 
 function ctrlPreview(flag) {
     if (flag == true) {
