@@ -48,6 +48,8 @@ function onOverlayDataUpdate(e) {
 }
 
 function update(lastDPS, lastHPS) {
+  var container = $('#dpsContainer');
+  var scrollTop = container.scrollTop();
   if (lastDPS.zone == "HAERU") {
     _ = "_P";
   } else _ = "";
@@ -294,7 +296,11 @@ function update(lastDPS, lastHPS) {
     }
   }
   ui();
+  container.scrollTop(scrollTop);
 }
+
+$("div[name=main]").wrapInner('<div id="dpsContainer"></div>');
+
 function onRaidCombatDataUpdate(flag, last) {
   if (last.Combatant["YOU"] != undefined || last.Combatant["YOU"] != null) {
     var row = $('<div class="rRow"></div>'),
