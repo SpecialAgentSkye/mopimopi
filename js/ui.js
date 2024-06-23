@@ -232,6 +232,7 @@ function callToast(id, start, end) {
         $('.toast').fadeOut(150);
     });
 }
+
 $("html").unbind("click").bind("click", function() {
     if (init.q.autoHide && view != 'settings') {
         hiddenTable()
@@ -244,7 +245,7 @@ function hiddenTable() {
     $('.toast').removeClass('on');
     $('.toast').fadeOut(0);
     if (init.q.autoHide && view != 'settings') {
-        time = setTimeout(hideWrap, init.Range.autoHideTime * 6000);
+        time = setTimeout(hideWrap, init.Range.autoHideTime * 60000);
     }
 }
 
@@ -254,6 +255,7 @@ function hideWrap() {
     callToast('hiddenTable', 0, 3000);
 
     $(document).on('mousemove', showUnhideMessage).on('mouseout', hideUnhideMessage).on('click', showWrap);
+    $('#unhideMessage').on('click', showWrap);
 }
 
 function showWrap() {
@@ -261,18 +263,17 @@ function showWrap() {
     hideUnhideMessage()
     resetHideTimer();
 
-    $(document).off('mousemove');
-    $(document).off('mouseout');
-    $(document).off('click');
+    $(document).off('mousemove', showUnhideMessage);
+    $(document).off('mouseout', hideUnhideMessage);
+    $(document).off('click', showWrap);
+    $('#unhideMessage').off('click', showWrap);
 }
 
 function showUnhideMessage() {
     $('#unhideMessage').fadeIn(0);
-    $('#unhideMessage').text("Click to unhide");
 }
 
 function hideUnhideMessage() {
-    $('#unhideMessage').text("");
 }
 
 function resetHideTimer() {
