@@ -238,6 +238,7 @@ $("html").unbind("click").bind("click", function() {
     } else
         clearTimeout(time)
 })
+
 function hiddenTable() {
     clearTimeout(time);
     $('.toast').removeClass('on');
@@ -267,7 +268,7 @@ function hiddenTable() {
 }
 
 function hideWrap() {
-    $('#wrap').fadeOut(150);
+    $('#wrap').fadeOut(0);
     $('#unhideMessage').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
 
@@ -275,8 +276,8 @@ function hideWrap() {
 }
 
 function showWrap() {
-    $('#wrap').fadeIn(0);
-    $('#unhideMessage').fadeOut(0);
+    $('#wrap').fadeIn(150);
+    hideUnhideMessage()
     resetHideTimer();
 
     $(document).off('mousemove');
@@ -285,12 +286,12 @@ function showWrap() {
 }
 
 function showUnhideMessage() {
-    $('#unhideMessage').fadeIn(1500);
+    $('#unhideMessage').fadeIn(350);
     $('#unhideMessage').text("Click to unhide");
 }
 
 function hideUnhideMessage() {
-    $('#unhideMessage').fadeOut(1500);
+    $('#unhideMessage').fadeOut(0);
     $('#unhideMessage').text("");
 }
 
