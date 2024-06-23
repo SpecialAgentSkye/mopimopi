@@ -254,7 +254,7 @@ function hideWrap() {
     $('#wrap').fadeOut(0);
     $('#unhideMessage').fadeIn(150);
     callToast('hiddenTable', 0, 3000);
-
+    console.log("HIDDEN")
     $(document).on('mousemove', showUnhideMessage).on('mouseleave', startHideTimer).on('click', showWrap);
     $('#unhideMessage').on('click', showWrap);
 }
@@ -263,7 +263,7 @@ function showWrap() {
     $('#wrap').fadeIn(150);
     hideUnhideMessage()
     resetHideTimer();
-
+    console.log("SHOWN")
     $(document).off('mousemove', showUnhideMessage);
     $(document).off('mouseleave', startHideTimer);
     $(document).off('click', showWrap);
