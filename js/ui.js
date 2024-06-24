@@ -276,7 +276,7 @@ function showUnhideMessage() {
 }
 
 function startHideTimer() {
-    hideTimer = setTimeout(hideUnhideMessage, 3000);
+    hideTimer = setTimeout(hideUnhideMessage, 100);
 }
 
 function hideUnhideMessage() {
