@@ -5,8 +5,8 @@ l = {
             EN: '<b style="color:#ffea00">MopiMopi Skye Edit<br>The philosophy of World of Warcraft meters, in ff!</b><br><br>Keep in mind this is still a <b>work in progress!</b><br>PC Users : <b>OverlayProc ❯ MUST Check "AppRegion"</b> to limit the draggable area.<br>'
         },
         tip: {
-            KR: '[UNOFFICIAL] MopiMopi ver.239SkyeEdit',
-            EN: '[UNOFFICIAL] MopiMopi ver.239SkyeEdit'
+            KR: '[UNOFFICIAL] MopiMopi ver.3-SkyeEdit',
+            EN: '[UNOFFICIAL] MopiMopi ver.3-SkyeEdit'
         },
         update: {
             KR: '<div name="row"><div class="c">05/22</div><div class="m">We back in this bish. No more wrong healing meters.</div></div>',
@@ -415,12 +415,12 @@ l = {
                 CN: "版本",
             },
             m: {
-                KR: 'MopiMopi ver.239SkyeEdit',
-                JP: 'MopiMopi ver.239SkyeEdit',
-                EN: 'MopiMopi ver.239SkyeEdit',
-                FR: 'MopiMopi ver.239SkyeEdit',
-                DE: 'MopiMopi ver.239SkyeEdit',
-                CN: "MopiMopi ver.239SkyeEdit",
+                KR: 'MopiMopi ver.3-SkyeEdit',
+                JP: 'MopiMopi ver.3-SkyeEdit',
+                EN: 'MopiMopi ver.3-SkyeEdit',
+                FR: 'MopiMopi ver.3-SkyeEdit',
+                DE: 'MopiMopi ver.3-SkyeEdit',
+                CN: "MopiMopi ver.3-SkyeEdit",
             },
             i: "new_releases",
             e: "li_2line",
@@ -1649,7 +1649,7 @@ l = {
                     EN: "Sage",
                     FR: "Sage",
                     DE: "Weise",
-                    CN: "Sage",
+                    CN: "贤者",
                 },
                 i: "<img src='./images/icon/frame/SGE.png'/>",
                 e: "li_color",
@@ -1699,7 +1699,7 @@ l = {
                     KR: "사무라이",
                     JP: "侍",
                     EN: "Samurai",
-                    FR: "Samurai",
+                    FR: "Samouraï",
                     DE: "Samurai",
                     CN: "武士",
                 },
@@ -1714,9 +1714,22 @@ l = {
                     EN: "Reaper",
                     FR: "Faucheur",
                     DE: "Schnitter",
-                    CN: "Reaper",
+                    CN: "钐镰客",
                 },
                 i: "<img src='./images/icon/frame/RPR.png'/>",
+                e: "li_color",
+                ul: 0
+            },
+            VPR: {
+                tt: {
+                    KR: "바이퍼",
+                    JP: "ヴァイパー",
+                    EN: "Viper",
+                    FR: "Rôdeur Vipère",
+                    DE: "Viper",
+                    CN: "Viper",
+                },
+                i: "<img src='./images/icon/frame/VIP.png'/>",
                 e: "li_color",
                 ul: 0
             },
@@ -1795,6 +1808,19 @@ l = {
                     CN: "赤魔法师",
                 },
                 i: "<img src='./images/icon/frame/RDM.png'/>",
+                e: "li_color",
+                ul: 0
+            },
+            PCT: {
+                tt: {
+                    KR: "픽토맨서",
+                    JP: "ピクトマンサー",
+                    EN: "Pictomancer",
+                    FR: "Pictomancien",
+                    DE: "Piktomant",
+                    CN: "Pictomancer",
+                },
+                i: "<img src='./images/icon/frame/PIC.png'/>",
                 e: "li_color",
                 ul: 0
             },
